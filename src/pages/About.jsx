@@ -137,12 +137,23 @@ function About() {
               </motion.div>
               
               {/* CTA Buttons */}
-              <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.8, delay:0.4 }} className="flex flex-wrap gap-4 pt-4">
-                <Link to="/services" className="group relative inline-flex items-center justify-center rounded-2xl bg-amber-500 px-8 py-3 text-sm font-bold text-slate-900 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-amber-500/50 hover:scale-105">
-                  <span className="relative z-10">Explore Our Services</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-amber-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="flex items-center gap-4 pt-4"
+              >
+                <Link
+                  to="/services"
+                  className="flex-1 inline-flex items-center pl-5 pr-5 justify-center rounded-2xl bg-amber-500 h-14 px-8 text-sm font-bold text-slate-900 shadow-lg hover:shadow-2xl hover:shadow-amber-500/50 transition-all duration-300 hover:scale-105"
+                >
+                  Explore Our Services
                 </Link>
-                <Link to="/contact" className="inline-flex items-center justify-center rounded-2xl border-2 border-white/30 px-8 py-3 text-sm font-bold text-white hover:bg-white/10 hover:border-amber-400/50 transition-all duration-300 backdrop-blur-sm">
+
+                <Link
+                  to="/contact"
+                  className="flex-1 inline-flex items-center justify-center rounded-2xl border-2 border-white/30 h-14 px-8 text-sm font-bold text-white backdrop-blur-sm hover:bg-white/10 hover:border-amber-400 transition-all duration-300"
+                >
                   Contact Us
                 </Link>
               </motion.div>
@@ -173,35 +184,46 @@ function About() {
                 alt="Team collaboration"
                 animate={{ y: [0, -16, 0] }}
                 transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-                className="relative rounded-[32px] border-2 border-white/30 shadow-2xl object-cover w-full h-[420px] hover:shadow-3xl transition-shadow duration-500"
+                className="relative rounded-[32px] border-2 border-white/30 shadow-2xl object-cover w-full h-[520px] sm:h-[500px] lg:h-[520px]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/30 via-transparent to-transparent rounded-[32px]" />
             </motion.div>
             
             {/* Enhanced Statistics with Glass Effect and Animations */}
-            <motion.div initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ duration:0.7, delay:0.3 }} className="absolute left-6 bottom-6 grid gap-3 sm:grid-cols-2">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="
+                absolute left-1/2 bottom-6 w-[88%] -translate-x-1/2
+                grid grid-cols-2 gap-4
+                max-[420px]:gap-3
+              "
+            >
               {[
-                { label: 'Placements', value: '500', suffix: '+' },
-                { label: 'Clients', value: '150', suffix: '+' },
-                { label: 'Industries', value: '25', suffix: '+' },
-                { label: 'Years', value: '6', suffix: '+' }
+                { label: "Placements", value: "500", suffix: "+" },
+                { label: "Clients", value: "150", suffix: "+" },
+                { label: "Industries", value: "25", suffix: "+" },
+                { label: "Years", value: "6", suffix: "+" },
               ].map((item) => (
                 <motion.div
                   key={item.label}
-                  whileHover={{ y: -6, scale: 1.08 }}
+                  whileHover={{ y: -5, scale: 1.04 }}
                   transition={{ duration: 0.3 }}
-                  className="group rounded-2xl bg-white/95 backdrop-blur-md border border-white/40 px-4 py-3 shadow-xl hover:shadow-2xl transition-all duration-300 hover:bg-white/[0.98] cursor-pointer"
+                  className="
+                    rounded-2xl bg-white/95 backdrop-blur-md
+                    border border-white/50 shadow-xl
+                    px-5 py-4
+                    max-[420px]:px-4 max-[420px]:py-3
+                  "
                 >
-                  <motion.p
-                    initial={{ opacity:0 }}
-                    whileInView={{ opacity:1 }}
-                    viewport={{ once:true }}
-                    transition={{ duration:0.5, delay:0.2 }}
-                    className="text-2xl font-bold text-blue-600 group-hover:text-blue-700"
-                  >
+                  <p className="text-3xl max-[420px]:text-2xl font-extrabold text-blue-600">
                     {item.value}{item.suffix}
-                  </motion.p>
-                  <p className="text-[11px] uppercase tracking-[0.24em] text-slate-600 mt-1 font-semibold group-hover:text-slate-900">{item.label}</p>
+                  </p>
+                  <p className="mt-2 text-[12px] max-[420px]:text-[10px] uppercase tracking-[0.28em] text-slate-600 font-bold">
+                    {item.label}
+                  </p>
                 </motion.div>
               ))}
             </motion.div>
@@ -273,28 +295,40 @@ function About() {
             </motion.div>
             
             {/* Enhanced CTA Buttons */}
-            <motion.div initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ duration:0.7, delay:0.4 }} className="flex flex-wrap gap-4 pt-8">
-              <motion.div whileHover={{ scale: 1.08 }} transition={{ duration: 0.3 }}>
-                <Link to="/services" className="group relative inline-flex items-center justify-center rounded-2xl bg-[#1349c5] text-white font-bold px-8 py-4 text-sm overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
-                  <span className="relative z-10 flex items-center gap-2">
-                    Explore Services
-                    <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                  </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </Link>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.08 }} transition={{ duration: 0.3 }}>
-                <Link to="/contact" className="group relative inline-flex items-center justify-center rounded-2xl border-2 border-slate-300 text-slate-700 font-bold px-8 py-4 text-sm hover:border-[#1349c5] hover:text-[#1349c5] hover:bg-slate-50 transition-all duration-300 shadow-md hover:shadow-lg">
-                  <span className="relative z-10 flex items-center gap-2">
-                    Get In Touch
-                    <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                  </span>
-                </Link>
-              </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.4 }}
+              className="flex flex-nowrap items-center justify-between gap-4 pt-8"
+            >
+              <Link
+                to="/services"
+                className="flex-1 inline-flex items-center justify-center gap-3 rounded-2xl bg-[#1349c5] text-white font-bold h-16 shadow-xl hover:bg-blue-700 transition-all"
+              >
+                Explore Services
+                <span className="text-xl">→</span>
+              </Link>
+
+              <Link
+                to="/contact"
+                className="flex-1 inline-flex items-center justify-center gap-3 rounded-2xl border-2 border-slate-300 bg-white text-slate-800 font-bold h-16 shadow-md hover:border-[#1349c5] hover:text-[#1349c5] transition-all"
+              >
+                Get In Touch
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
+              </Link>
             </motion.div>
           </motion.div>
         </div>
@@ -359,92 +393,265 @@ function About() {
         </div>
       </section>
 
-      <section className="py-20 px-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-14">
-            <span className="text-[#1349c5] text-xs font-bold uppercase tracking-widest">Our Journey</span>
-            <h2 className="text-3xl font-extrabold text-slate-900 mt-2">Milestones</h2>
+      <section className="relative overflow-hidden py-24 px-6 bg-gradient-to-br from-slate-50 via-white to-blue-50">
+        <div className="absolute inset-0 bg-[radial-gradient(#1349c510_1px,transparent_1px)] [background-size:22px_22px]" />
+        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-300/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-72 h-72 bg-indigo-300/20 rounded-full blur-3xl" />
+
+        <div className="relative max-w-6xl mx-auto">
+          <div className="text-center mb-20">
+            <span className="text-[#1349c5] text-xs font-bold uppercase tracking-widest">
+              Our Journey
+            </span>
+
+            <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mt-3">
+              Company Milestones
+            </h2>
+
             <p className="max-w-2xl mx-auto text-slate-500 mt-4 text-sm leading-relaxed">
-              A visual timeline of how we’ve grown, built trust, and helped companies hire with confidence.
+              A creative timeline of how Xpress Talent Hiring has grown, served clients,
+              and built trust across industries.
             </p>
-            <div className="w-16 h-1 bg-[#1349c5] mx-auto mt-4 rounded-full" />
+
+            <div className="w-16 h-1 bg-[#1349c5] mx-auto mt-5 rounded-full" />
           </div>
-          <div className="relative grid gap-10">
-            {timeline.map((item, i) => {
-              const isEven = i % 2 === 0;
-              const isCurrent = i === timeline.length - 1;
-              return (
-                <motion.div
-                  key={i}
-                  initial={{ opacity:0,y:20 }}
-                  whileInView={{ opacity:1,y:0 }}
-                  viewport={{ once:true }}
-                  transition={{ duration:0.5,delay:i*0.1 }}
-                  className={`relative flex flex-col gap-4 rounded-[28px] border p-6 shadow-sm transition-all duration-300 ${isCurrent ? 'border-blue-300 bg-blue-50 shadow-xl' : 'border-slate-200 bg-white hover:shadow-md'} ${isEven ? 'md:ml-auto md:max-w-[55%]' : 'md:mr-auto md:max-w-[55%]'}`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${isCurrent ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-700'}`}>
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={item.icon} /></svg>
-                    </div>
-                    <div>
-                      <p className="text-sm uppercase tracking-[0.24em] text-slate-400">{item.year}</p>
-                      <h3 className={`text-xl font-bold ${isCurrent ? 'text-slate-900' : 'text-slate-900'}`}>{item.event.split('.')[0]}</h3>
-                    </div>
-                  </div>
-                  <p className="text-slate-600 text-sm leading-relaxed">
-                    {item.event}
-                  </p>
-                  {isCurrent && (
-                    <div className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-2 text-xs font-semibold text-blue-800">
-                      <span className="inline-flex h-2.5 w-2.5 rounded-full bg-blue-600" /> Current milestone
-                    </div>
-                  )}
-                </motion.div>
-              );
-            })}
+
+          <div className="relative">
+            <motion.div
+              initial={{ scaleY: 0 }}
+              whileInView={{ scaleY: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              className="absolute left-6 md:left-1/2 top-0 h-full w-[4px] origin-top -translate-x-1/2 rounded-full bg-gradient-to-b from-blue-600 via-indigo-600 to-amber-500"
+            />
+
+            <div>
+              {timeline.map((item, i) => {
+                const isEven = i % 2 === 0;
+                const colors = [
+                  "from-blue-600 to-indigo-600",
+                  "from-emerald-500 to-teal-600",
+                  "from-amber-500 to-orange-600",
+                  "from-rose-500 to-pink-600",
+                ];
+
+                return (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: isEven ? -80 : 80 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, amount: 0.35 }}
+                    transition={{ duration: 0.65, delay: i * 0.12 }}
+                    className={`relative flex items-center ${
+                      isEven ? "md:justify-start" : "md:justify-end"
+                    }`}
+                  >
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      whileInView={{ scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ type: "spring", stiffness: 220, delay: i * 0.15 }}
+                      className={`absolute left-6 md:left-1/2 z-20 flex h-14 w-14 -translate-x-1/2 items-center justify-center rounded-2xl bg-gradient-to-br ${
+                        colors[i % colors.length]
+                      } text-white shadow-xl shadow-blue-500/30`}
+                    >
+                      <motion.svg
+                        animate={{ y: [0, -5, 0] }}
+                        transition={{ duration: 2.5, repeat: Infinity }}
+                        className="h-7 w-7"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2.4"
+                          d={item.icon}
+                        />
+                      </motion.svg>
+                    </motion.div>
+
+                    <motion.div
+                      whileHover={{ y: -10, scale: 1.03 }}
+                      transition={{ duration: 0.3 }}
+                      className={`group ml-20 md:ml-0 w-full md:w-[44%] rounded-[30px] border border-white/60 bg-white/80 p-7 shadow-xl backdrop-blur-xl transition-all duration-300 hover:border-blue-300 hover:shadow-2xl hover:shadow-blue-500/20 ${
+                        isEven ? "md:mr-auto md:text-right" : "md:ml-auto md:text-left"
+                      }`}
+                    >
+                      <div
+                        className={`inline-flex rounded-full bg-gradient-to-r ${
+                          colors[i % colors.length]
+                        } px-5 py-2 text-sm font-extrabold tracking-widest text-white shadow-lg`}
+                      >
+                        {item.year}
+                      </div>
+
+                      <h3 className="mt-5 text-xl md:text-2xl font-extrabold text-slate-900">
+                        {item.event.split(".")[0]}
+                      </h3>
+
+                      <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                        {item.event}
+                      </p>
+
+                      <div
+                        className={`mt-6 flex gap-2 ${
+                          isEven ? "md:justify-end" : "md:justify-start"
+                        }`}
+                      >
+                        <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">
+                          Growth
+                        </span>
+                        <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-bold text-amber-700">
+                          Trust
+                        </span>
+                        <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
+                          Hiring
+                        </span>
+                      </div>
+
+                      <div className="mt-6 h-1 w-full overflow-hidden rounded-full bg-slate-100">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          whileInView={{ width: "100%" }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 1, delay: i * 0.15 }}
+                          className={`h-full bg-gradient-to-r ${
+                            colors[i % colors.length]
+                          }`}
+                        />
+                      </div>
+                    </motion.div>
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-gradient-to-r from-[#1349c5] to-indigo-700 text-white py-24 px-6">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.08),transparent_35%)]" />
-        <div className="pointer-events-none absolute right-0 top-1/2 h-72 w-72 -translate-y-1/2 rounded-full bg-white/10 blur-3xl" />
-        <div className="pointer-events-none absolute left-0 bottom-0 h-44 w-44 rounded-full bg-white/10 blur-3xl" />
-        <div className="max-w-6xl mx-auto grid gap-12 lg:grid-cols-[1.2fr_0.8fr] items-center">
-          <div className="space-y-6">
-            <span className="inline-flex rounded-full bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white/80">Trusted by 150+ Companies</span>
-            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight">Ready to Transform Your Hiring?</h2>
-            <p className="text-blue-100 max-w-2xl text-base leading-relaxed">
-              Partner with Xpress Talent Hiring and experience the difference of precision-matched, pre-vetted talent backed by 500+ successful placements.
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#0f3ea8] via-[#1349c5] to-indigo-800 text-white py-28 px-6">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.12),transparent_35%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(#ffffff12_1px,transparent_1px)] [background-size:24px_24px]" />
+
+        <motion.div
+          animate={{ scale: [1, 1.15, 1], opacity: [0.16, 0.32, 0.16] }}
+          transition={{ duration: 8, repeat: Infinity }}
+          className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-white/20 blur-3xl"
+        />
+
+        <motion.div
+          animate={{ y: [0, -25, 0], opacity: [0.15, 0.3, 0.15] }}
+          transition={{ duration: 7, repeat: Infinity }}
+          className="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-amber-400/20 blur-3xl"
+        />
+
+        <div className="relative max-w-6xl mx-auto grid gap-14 lg:grid-cols-[1.15fr_0.85fr] items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="space-y-7"
+          >
+            <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-5 py-2 text-xs font-bold uppercase tracking-[0.3em] text-blue-100 backdrop-blur-md">
+              Trusted Hiring Partner
+            </span>
+
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+              Ready to Transform <br />
+              <span className="text-amber-400">Your Hiring?</span>
+            </h2>
+
+            <p className="text-blue-100 max-w-2xl text-base md:text-lg leading-relaxed">
+              Partner with Xpress Talent Hiring and experience precision-matched,
+              pre-vetted talent backed by proven recruitment success.
             </p>
-            <div className="flex flex-wrap justify-start gap-4 pt-2">
-              <Link to="/employers" className="inline-flex items-center justify-center rounded-3xl bg-amber-500 px-10 py-4 text-base font-bold text-slate-950 shadow-2xl shadow-amber-500/30 transition duration-300 hover:-translate-y-0.5 hover:bg-amber-400">
-                Post a Requirement
-              </Link>
-              <Link to="/contact" className="inline-flex items-center justify-center rounded-3xl border border-white/30 bg-white/10 px-10 py-4 text-base font-bold text-white transition duration-300 hover:bg-white/20 hover:shadow-lg">
-                Talk to Our Team
-              </Link>
+
+            <p className="text-sm font-semibold text-white/90">
+              Trusted by 150+ Companies • 500+ Successful Placements • 25+ Industries
+            </p>
+
+            <div className="flex flex-wrap gap-4 pt-4">
+              <motion.div whileHover={{ scale: 1.07, y: -4 }}>
+                <Link
+                  to="/employers"
+                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-3xl bg-amber-500 px-10 py-4 text-base font-extrabold text-slate-950 shadow-2xl shadow-amber-500/40 transition duration-300"
+                >
+                  <span className="relative z-10 flex items-center gap-2">
+                    Post a Requirement
+                    <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </Link>
+              </motion.div>
+
+              <motion.div whileHover={{ scale: 1.07, y: -4 }}>
+                <Link
+                  to="/contact"
+                  className="group inline-flex items-center justify-center rounded-3xl border-2 border-white/40 bg-white/15 px-10 py-4 text-base font-extrabold text-white backdrop-blur-md transition duration-300 hover:border-amber-400 hover:bg-white/25 hover:shadow-xl"
+                >
+                  Talk to Our Team
+                </Link>
+              </motion.div>
             </div>
-          </div>
-          <div className="relative hidden lg:block">
-            <div className="absolute -right-10 top-10 h-40 w-40 rounded-full bg-white/10 blur-3xl" />
-            <div className="relative rounded-[28px] border border-white/10 bg-white/10 p-8 shadow-2xl backdrop-blur-xl">
-              <div className="grid gap-4">
-                <div className="rounded-3xl bg-white/10 p-6 shadow-inner border border-white/10">
-                  <p className="text-sm uppercase tracking-[0.25em] text-blue-100">Hiring Performance</p>
-                  <p className="mt-3 text-3xl font-extrabold text-white">500+</p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            className="grid gap-5"
+          >
+            {[
+              {
+                title: "Successful Placements",
+                value: "500+",
+                icon: "M5 13l4 4L19 7",
+              },
+              {
+                title: "Trusted Clients",
+                value: "150+",
+                icon: "M17 20h5v-2a4 4 0 00-5-3.87M9 20H4v-2a4 4 0 015-3.87M12 12a4 4 0 100-8 4 4 0 000 8z",
+              },
+              {
+                title: "Industries Served",
+                value: "25+",
+                icon: "M3 21h18M5 21V7l8-4v18M19 21V11l-6-4",
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                whileHover={{ y: -8, scale: 1.04 }}
+                transition={{ duration: 0.3 }}
+                className="group rounded-[28px] border border-white/20 bg-white/10 p-6 shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-amber-400/50 hover:bg-white/15"
+              >
+                <div className="flex items-center gap-5">
+                  <motion.div
+                    whileHover={{ rotate: 10, scale: 1.15 }}
+                    className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 text-amber-400 shadow-lg"
+                  >
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.4" d={item.icon} />
+                    </svg>
+                  </motion.div>
+
+                  <div>
+                    <p className="text-4xl font-extrabold text-white">
+                      {item.value}
+                    </p>
+                    <p className="mt-1 text-sm uppercase tracking-widest text-blue-100 font-semibold">
+                      {item.title}
+                    </p>
+                  </div>
                 </div>
-                <div className="rounded-3xl bg-white/10 p-6 shadow-inner border border-white/10">
-                  <p className="text-sm uppercase tracking-[0.25em] text-blue-100">Trusted Clients</p>
-                  <p className="mt-3 text-3xl font-extrabold text-white">150+</p>
-                </div>
-                <div className="rounded-3xl bg-white/10 p-6 shadow-inner border border-white/10">
-                  <p className="text-sm uppercase tracking-[0.25em] text-blue-100">Industries Served</p>
-                  <p className="mt-3 text-3xl font-extrabold text-white">25+</p>
-                </div>
-              </div>
-            </div>
-          </div>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
     </div>

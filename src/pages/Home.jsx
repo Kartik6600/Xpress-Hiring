@@ -10,7 +10,7 @@ const bannerSlides = [
     bg: "from-blue-900 via-indigo-900 to-slate-900",
     cta1: "Apply For Jobs",
     cta1Link: "/candidates",
-    cta2: "Find Candidates",
+    cta2: "Find Company",
     cta2Link: "/employers"
   },
   {
@@ -370,194 +370,262 @@ function Home() {
   return (
     <div className="flex flex-col min-h-screen">
 
-      {/* 1. Hero Banner Slider */}
-      <div className="relative h-[480px] md:h-[550px] overflow-hidden text-white flex items-center justify-center bg-slate-950 group" style={{ perspective: 1200 }}>
+{/* 1. Hero Banner Slider */}
+<div
+  className="relative overflow-hidden text-white bg-slate-950 group min-h-[auto] lg:min-h-[620px]"
+  style={{ perspective: 1200 }}
+>
+  {/* Animated Background */}
+  <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <motion.div
+      animate={{
+        scale: [1, 1.2, 0.9, 1.1, 1],
+        x: [0, 30, -20, 15, 0],
+        y: [0, -25, 40, -15, 0],
+      }}
+      transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+      className="absolute top-10 left-0 w-56 h-56 sm:w-80 sm:h-80 rounded-full bg-blue-500/20 blur-3xl"
+    />
 
-        {/* Animated Background blobs for premium creativity */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <motion.div
-            animate={{
-              scale: [1, 1.2, 0.9, 1.1, 1],
-              x: [0, 50, -30, 20, 0],
-              y: [0, -40, 60, -20, 0],
-            }}
-            transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            className="absolute top-1/4 left-1/4 w-80 h-80 rounded-full bg-blue-500/20 blur-3xl"
-          />
-          <motion.div
-            animate={{
-              scale: [1, 0.8, 1.1, 0.9, 1],
-              x: [0, -60, 40, -10, 0],
-              y: [0, 50, -30, 40, 0],
-            }}
-            transition={{
-              duration: 25,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-indigo-500/20 blur-3xl"
-          />
+    <motion.div
+      animate={{
+        scale: [1, 0.8, 1.1, 0.9, 1],
+        x: [0, -30, 25, -10, 0],
+        y: [0, 35, -20, 25, 0],
+      }}
+      transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+      className="absolute bottom-10 right-0 w-64 h-64 sm:w-96 sm:h-96 rounded-full bg-indigo-500/20 blur-3xl"
+    />
 
-          {/* Subtle Grid pattern overlay */}
-          <div className="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px] opacity-70"></div>
+    <div className="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px] opacity-70" />
+  </div>
+
+  <AnimatePresence initial={false} custom={direction} mode="wait">
+    <motion.div
+      key={slideIndex}
+      custom={direction}
+      variants={slideVariants}
+      initial="enter"
+      animate="center"
+      exit="exit"
+      className={`relative lg:absolute lg:inset-0 flex items-start lg:items-center justify-center px-4 sm:px-6 pt-28 sm:pt-32 lg:pt-0 pb-24 sm:pb-28 lg:pb-0 bg-gradient-to-br ${bannerSlides[slideIndex].bg}`}
+      style={{ transformStyle: "preserve-3d" }}
+    >
+      <div
+        className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.25fr_0.9fr] gap-8 lg:gap-12 items-center"
+        style={{ transformStyle: "preserve-3d" }}
+      >
+        {/* Left Content */}
+        <div className="space-y-5 sm:space-y-6 text-center lg:text-left">
+          <motion.span
+            variants={childVariants}
+            className="block max-w-[330px] sm:max-w-none mx-auto lg:mx-0 text-amber-400 font-bold text-[10px] sm:text-xs md:text-sm leading-relaxed tracking-[0.16em] sm:tracking-[0.25em] uppercase"
+          >
+            {bannerSlides[slideIndex].tagline}
+          </motion.span>
+
+          <motion.h2
+            variants={childVariants}
+            className="max-w-4xl mx-auto lg:mx-0 text-[32px] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] text-white drop-shadow-md"
+          >
+            {bannerSlides[slideIndex].title}
+          </motion.h2>
+
+          <motion.p
+            variants={childVariants}
+            className="text-sm sm:text-base md:text-lg text-gray-200 max-w-[340px] sm:max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed"
+          >
+            {bannerSlides[slideIndex].description}
+          </motion.p>
+
+          <motion.div
+            variants={childVariants}
+            className="flex flex-nowrap items-center gap-3 pt-2 w-full sm:w-auto"
+          >
+            <Link
+              to={bannerSlides[slideIndex].cta1Link}
+              className="relative flex-1 sm:flex-none min-w-0 h-14 px-6 rounded-xl
+                        bg-amber-500 hover:bg-amber-600
+                        text-slate-950 font-bold text-sm
+                        flex items-center justify-center
+                        shadow-lg shadow-amber-500/20
+                        transition-all duration-300 hover:scale-105"
+            >
+              <span className="truncate">
+                {bannerSlides[slideIndex].cta1}
+              </span>
+            </Link>
+
+            <Link
+              to={bannerSlides[slideIndex].cta2Link}
+              className="relative flex-1 sm:flex-none min-w-0 h-14 px-6 rounded-xl
+                        bg-white/5 hover:bg-white/10
+                        border-2 border-white/50 hover:border-white
+                        text-white font-bold text-sm
+                        flex items-center justify-center
+                        backdrop-blur-sm
+                        transition-all duration-300 hover:scale-105"
+            >
+              <span className="truncate">
+                {bannerSlides[slideIndex].cta2}
+              </span>
+            </Link>
+          </motion.div>
+
+          {/* Stats */}
+          <motion.div
+            variants={childVariants}
+            className="mt-6 sm:mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4"
+          >
+            {[
+              { value: "90%", label: "Hiring success" },
+              { value: "500+", label: "Placements" },
+              { value: "150+", label: "Trusted companies" },
+              { value: "24h", label: "Response time" },
+            ].map((item) => (
+              <div
+                key={item.label}
+                className="rounded-2xl bg-white/10 border border-white/10 px-3 sm:px-4 py-4 text-center lg:text-left backdrop-blur-md"
+              >
+                <p className="text-xl sm:text-2xl font-bold text-white">
+                  {item.value}
+                </p>
+                <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.16em] text-slate-200/70 mt-1 leading-relaxed">
+                  {item.label}
+                </p>
+              </div>
+            ))}
+          </motion.div>
         </div>
 
-        <AnimatePresence initial={false} custom={direction} mode="wait">
-          <motion.div
-            key={slideIndex}
-            custom={direction}
-            variants={slideVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            className={`absolute inset-0 flex flex-col items-center justify-center text-center px-6 bg-gradient-to-br ${bannerSlides[slideIndex].bg}`}
-            style={{ transformStyle: "preserve-3d" }}
-          >
-            {/* Content Container */}
-            <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1.3fr_0.9fr] gap-12 items-center select-none" style={{ transformStyle: "preserve-3d" }}>
-              <div className="space-y-6 text-center lg:text-left">
-                <motion.span
-                  variants={childVariants}
-                  className="text-amber-400 font-bold text-xs md:text-sm tracking-[0.25em] uppercase"
-                >
-                  {bannerSlides[slideIndex].tagline}
-                </motion.span>
+        {/* Right Card */}
+        <motion.div
+          variants={childVariants}
+          className="relative w-full max-w-md mx-auto lg:max-w-none rounded-[28px] sm:rounded-[32px] border border-white/10 bg-white/10 p-4 sm:p-6 shadow-2xl backdrop-blur-xl overflow-hidden"
+        >
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.35),transparent_45%)] pointer-events-none" />
 
-                <motion.h2
-                  variants={childVariants}
-                  className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight text-white drop-shadow-md"
-                >
-                  {bannerSlides[slideIndex].title}
-                </motion.h2>
+          <div className="relative space-y-4 sm:space-y-6">
+            <div className="rounded-[24px] sm:rounded-[28px] border border-white/10 bg-white/10 p-4 sm:p-5">
+              <div className="flex flex-col min-[420px]:flex-row min-[420px]:items-center justify-between gap-4">
+                <div>
+                  <p className="text-[10px] sm:text-xs uppercase tracking-[0.22em] text-slate-200/75">
+                    Featured talent
+                  </p>
+                  <h3 className="text-xl sm:text-2xl font-extrabold text-white mt-1">
+                    Pre-screened candidates
+                  </h3>
+                </div>
 
-                <motion.p
-                  variants={childVariants}
-                  className="text-sm md:text-base text-gray-200 max-w-2xl font-light leading-relaxed"
-                >
-                  {bannerSlides[slideIndex].description}
-                </motion.p>
-
-                <motion.div
-                  variants={childVariants}
-                  className="flex flex-wrap justify-center lg:justify-start gap-4 pt-4"
-                >
-                  <Link
-                    to={bannerSlides[slideIndex].cta1Link}
-                    className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-3 rounded-lg text-sm transition-all duration-300 shadow-lg shadow-amber-500/20 hover:scale-105"
-                  >
-                    {bannerSlides[slideIndex].cta1}
-                  </Link>
-                  <Link
-                    to={bannerSlides[slideIndex].cta2Link}
-                    className="bg-transparent hover:bg-white/10 text-white border-2 border-white/60 hover:border-white font-bold px-6 py-3 rounded-lg text-sm transition-all duration-300 hover:scale-105"
-                  >
-                    {bannerSlides[slideIndex].cta2}
-                  </Link>
-                </motion.div>
-
-                <motion.div variants={childVariants} className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
-                  {[
-                    { value: '90%', label: 'Hiring success' },
-                    { value: '500+', label: 'Placements' },
-                    { value: '150+', label: 'Trusted companies' },
-                    { value: '24h', label: 'Response time' }
-                  ].map((item) => (
-                    <div key={item.label} className="rounded-3xl bg-white/10 border border-white/10 px-4 py-4 text-left">
-                      <p className="text-xl font-bold text-white">{item.value}</p>
-                      <p className="text-xs uppercase tracking-[0.25em] text-slate-200/70 mt-1">{item.label}</p>
-                    </div>
-                  ))}
-                </motion.div>
+                <div className="w-fit shrink-0 inline-flex items-center justify-center rounded-full bg-emerald-400/15 px-3 py-2 text-emerald-100 text-xs font-semibold">
+                  Verified
+                </div>
               </div>
 
-              <motion.div
-                variants={childVariants}
-                className="relative rounded-[32px] border border-white/10 bg-white/10 p-6 shadow-2xl backdrop-blur-xl overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.35),transparent_45%)] pointer-events-none"></div>
-                <div className="relative space-y-6">
-                  <div className="rounded-[28px] border border-white/10 bg-white/10 p-5">
-                    <div className="flex items-center justify-between gap-4">
-                      <div>
-                        <p className="text-xs uppercase tracking-[0.3em] text-slate-200/75">Featured talent</p>
-                        <h3 className="text-2xl font-extrabold text-white">Pre-screened candidates</h3>
-                      </div>
-                      <div className="inline-flex items-center justify-center rounded-3xl bg-emerald-400/15 px-3 py-2 text-emerald-100 text-xs font-semibold">
-                        Verified
-                      </div>
-                    </div>
-                    <div className="mt-5 grid grid-cols-2 gap-3 text-slate-200">
-                      <div className="rounded-3xl bg-white/10 p-4">
-                        <p className="text-3xl font-bold">24h</p>
-                        <p className="text-xs uppercase tracking-[0.25em] text-slate-200/70 mt-1">Fast Matching</p>
-                      </div>
-                      <div className="rounded-3xl bg-white/10 p-4">
-                        <p className="text-3xl font-bold">92%</p>
-                        <p className="text-xs uppercase tracking-[0.25em] text-slate-200/70 mt-1">Success rate</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="rounded-[28px] border border-white/10 bg-white/5 p-5">
-                    <div className="flex items-center gap-3 text-white">
-                      <span className="inline-flex items-center justify-center rounded-3xl bg-white/15 p-3">
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 7h18M3 12h18M3 17h18" /></svg>
-                      </span>
-                      <div>
-                        <p className="text-xs uppercase tracking-[0.25em] text-slate-200/70">Matching in</p>
-                        <p className="text-lg font-bold">BFSI, Retail & IT</p>
-                      </div>
-                    </div>
-                    <div className="mt-5 grid grid-cols-2 gap-3 text-slate-200">
-                      <div className="rounded-3xl bg-white/10 p-4">
-                        <p className="text-sm font-semibold">Remote friendly</p>
-                      </div>
-                      <div className="rounded-3xl bg-white/10 p-4">
-                        <p className="text-sm font-semibold">Entry level</p>
-                      </div>
-                    </div>
-                  </div>
+              <div className="mt-5 grid grid-cols-2 gap-3 text-slate-200">
+                <div className="rounded-2xl bg-white/10 p-4">
+                  <p className="text-2xl sm:text-3xl font-bold">24h</p>
+                  <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.16em] text-slate-200/70 mt-1">
+                    Fast Matching
+                  </p>
                 </div>
-              </motion.div>
+
+                <div className="rounded-2xl bg-white/10 p-4">
+                  <p className="text-2xl sm:text-3xl font-bold">92%</p>
+                  <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.16em] text-slate-200/70 mt-1">
+                    Success rate
+                  </p>
+                </div>
+              </div>
             </div>
-          </motion.div>
-        </AnimatePresence>
 
-        {/* Side Arrows (Left & Right) */}
-        <button
-          onClick={() => paginate(-1)}
-          className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/20 hover:bg-black/50 text-white flex items-center justify-center transition opacity-0 group-hover:opacity-100 focus:outline-none z-10"
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-        <button
-          onClick={() => paginate(1)}
-          className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/20 hover:bg-black/50 text-white flex items-center justify-center transition opacity-0 group-hover:opacity-100 focus:outline-none z-10"
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
+            <div className="rounded-[24px] sm:rounded-[28px] border border-white/10 bg-white/5 p-4 sm:p-5">
+              <div className="flex items-center gap-3 text-white">
+                <span className="inline-flex items-center justify-center rounded-2xl bg-white/15 p-3 shrink-0">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M3 7h18M3 12h18M3 17h18"
+                    />
+                  </svg>
+                </span>
 
-        {/* Dynamic Indicator dots */}
-        <div className="absolute bottom-16 flex gap-3 z-10">
-          {bannerSlides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setSlide([i, i > slideIndex ? 1 : -1])}
-              className={`h-1.5 rounded-full transition-all duration-300 ${slideIndex === i ? 'w-8 bg-amber-400' : 'w-2 bg-white/40'}`}
-            />
-          ))}
-        </div>
+                <div>
+                  <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-slate-200/70">
+                    Matching in
+                  </p>
+                  <p className="text-base sm:text-lg font-bold">
+                    BFSI, Retail & IT
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-5 grid grid-cols-1 min-[420px]:grid-cols-2 gap-3 text-slate-200">
+                <div className="rounded-2xl bg-white/10 p-4">
+                  <p className="text-xs sm:text-sm font-semibold">
+                    Remote friendly
+                  </p>
+                </div>
+
+                <div className="rounded-2xl bg-white/10 p-4">
+                  <p className="text-xs sm:text-sm font-semibold">
+                    Entry level
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
+    </motion.div>
+  </AnimatePresence>
+
+  {/* Left Button */}
+  <button
+    onClick={() => paginate(-1)}
+    className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-black/35 hover:bg-black/55 text-white flex items-center justify-center transition opacity-100 lg:opacity-0 lg:group-hover:opacity-100 focus:outline-none z-20"
+    aria-label="Previous slide"
+  >
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
+    </svg>
+  </button>
+
+  {/* Right Button */}
+  <button
+    onClick={() => paginate(1)}
+    className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-black/35 hover:bg-black/55 text-white flex items-center justify-center transition opacity-100 lg:opacity-0 lg:group-hover:opacity-100 focus:outline-none z-20"
+    aria-label="Next slide"
+  >
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+    </svg>
+  </button>
+
+  {/* Dots */}
+  <div className="absolute bottom-7 sm:bottom-2 lg:bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+    {bannerSlides.map((_, i) => (
+      <button
+        key={i}
+        onClick={() => setSlide([i, i > slideIndex ? 1 : -1])}
+        className={`h-1.5 rounded-full transition-all duration-300 ${
+          slideIndex === i ? "w-8 bg-amber-400" : "w-2 bg-white/40"
+        }`}
+        aria-label={`Go to slide ${i + 1}`}
+      />
+    ))}
+  </div>
+</div>
 
       {/* 2. Find The Right Job For You Section */}
-      <section className="bg-white/90 backdrop-blur-md py-12 px-6 shadow-xl relative -mt-10 mx-auto max-w-6xl w-full rounded-3xl border border-slate-200/80 z-20">
+      <section className="bg-white/90 backdrop-blur-md py-12 px-6 shadow-xl relative -mt-8 mx-auto max-w-6xl w-full rounded-3xl border border-slate-200/80 z-20">
         <div className="text-center mb-8">
           <h3 className="text-2xl md:text-3xl font-extrabold text-blue-900 tracking-tight">Find The Right Job For You</h3>
           <p className="text-sm text-slate-600 max-w-2xl mx-auto mt-3 leading-relaxed">
