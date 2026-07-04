@@ -411,27 +411,6 @@ function Login() {
               )}
             </motion.button>
           </form>
-
-          {/* Trust Indicators */}
-          <div className="grid grid-cols-3 gap-3 mt-7">
-            {trustStats.map((stat, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + i * 0.1 }}
-                className="rounded-2xl bg-slate-50 border border-slate-100 p-3 text-center"
-              >
-                <p className="text-sm font-extrabold text-[#1349c5]">
-                  {stat.value}
-                </p>
-                <p className="text-[10px] text-slate-400 font-semibold leading-tight mt-1">
-                  {stat.label}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-
           <p className="text-center text-xs text-slate-400 mt-7">
             Not registered?{" "}
             <Link

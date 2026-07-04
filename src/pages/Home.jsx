@@ -10,7 +10,7 @@ const bannerSlides = [
     bg: "from-blue-900 via-indigo-900 to-slate-900",
     cta1: "Apply For Jobs",
     cta1Link: "/candidates",
-    cta2: "Find Company",
+    cta2: "Register Company",
     cta2Link: "/employers"
   },
   {
@@ -198,7 +198,7 @@ const testimonials = [
     company: "Atria Finance",
     rating: 5,
     image: "https://api.dicebear.com/6.x/adventurer/svg?seed=Aman",
-    companyLogo: "https://via.placeholder.com/96x28?text=Atria"
+    companyLogo: "/logo 1.png"
   },
   {
     quote: "Very reliable and pre-screened talent supply. It significantly lowered our corporate hiring costs and sourcing cycle time.",
@@ -209,17 +209,18 @@ const testimonials = [
     company: "Mercury Services",
     rating: 5,
     image: "https://api.dicebear.com/6.x/adventurer/svg?seed=Meera",
-    companyLogo: "https://via.placeholder.com/96x28?text=Mercury"
+    companyLogo: "/logo 2.png"
   },
   {
     quote: "Highly recommend for entry-level placements. The training modules candidates complete make onboarding smooth and easy.",
     name: "Rohan Mehta",
+    initials: "RM",
     role: "Operations Lead",
     industry: "MSME",
     company: "Novus Retail",
     rating: 5,
     image: "https://api.dicebear.com/6.x/adventurer/svg?seed=Rohan",
-    companyLogo: "https://via.placeholder.com/96x28?text=Novus"
+    companyLogo: "/logo 3.png"
   },
   {
     quote: "Their sourcing process is transparent and fast. We onboarded three hires in a single week with great quality.",
@@ -230,7 +231,7 @@ const testimonials = [
     company: "HexaTech",
     rating: 5,
     image: "https://api.dicebear.com/6.x/adventurer/svg?seed=Sneha",
-    companyLogo: "https://via.placeholder.com/96x28?text=HexaTech"
+    companyLogo: "/logo 4.png"
   },
   {
     quote: "The candidate shortlist was excellent and the execution made our hiring cycle much smoother.",
@@ -241,7 +242,7 @@ const testimonials = [
     company: "PixelEdge",
     rating: 5,
     image: "https://api.dicebear.com/6.x/adventurer/svg?seed=Vikram",
-    companyLogo: "https://via.placeholder.com/96x28?text=PixelEdge"
+    companyLogo: "/logo 5.png"
   }
 ];
 
@@ -470,31 +471,6 @@ function Home() {
                 {bannerSlides[slideIndex].cta2}
               </span>
             </Link>
-          </motion.div>
-
-          {/* Stats */}
-          <motion.div
-            variants={childVariants}
-            className="mt-6 sm:mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4"
-          >
-            {[
-              { value: "90%", label: "Hiring success" },
-              { value: "500+", label: "Placements" },
-              { value: "150+", label: "Trusted companies" },
-              { value: "24h", label: "Response time" },
-            ].map((item) => (
-              <div
-                key={item.label}
-                className="rounded-2xl bg-white/10 border border-white/10 px-3 sm:px-4 py-4 text-center lg:text-left backdrop-blur-md"
-              >
-                <p className="text-xl sm:text-2xl font-bold text-white">
-                  {item.value}
-                </p>
-                <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.16em] text-slate-200/70 mt-1 leading-relaxed">
-                  {item.label}
-                </p>
-              </div>
-            ))}
           </motion.div>
         </div>
 
@@ -887,7 +863,7 @@ function Home() {
               title: 'Trusted Network', 
               desc: 'Supported by top companies across',
               highlight: 'BFSI, IT, Retail and MSME.',
-              icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zM12 6c.83 0 1.5-.67 1.5-1.5S12.83 3 12 3s-1.5.67-1.5 1.5S11.17 6 12 6zm-6 6c.83 0 1.5-.67 1.5-1.5S6.83 9 6 9s-1.5.67-1.5 1.5S5.17 12 6 12zm0 6c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zm12 0c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5z',
+              icon: 'M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9',
               accent: 'from-emerald-50 via-emerald-50/50 to-white',
               borderColor: 'border-emerald-200',
               iconBg: 'bg-gradient-to-br from-emerald-500 to-emerald-600'
@@ -1033,7 +1009,7 @@ function Home() {
                 transition={{ duration: 0.45 }}
                 className="relative max-w-3xl rounded-[32px] border border-slate-200 bg-slate-50 p-10 shadow-xl"
               >
-                <div className="absolute inset-x-10 -top-6 h-16 rounded-b-[32px] bg-gradient-to-r from-blue-600 to-indigo-600 opacity-10" />
+                {/* <div className="absolute inset-x-10 -top-6 h-16 rounded-b-[32px] bg-gradient-to-r from-blue-600 to-indigo-600 opacity-10" /> */}
                 <div className="relative space-y-8">
                   <p className="text-lg md:text-xl text-slate-700 italic font-medium leading-relaxed max-w-2xl mx-auto">
                     "{testimonials[activeTestimonial].quote}"
@@ -1061,9 +1037,15 @@ function Home() {
                           </svg>
                         ))}
                       </div>
-                      <div className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-2 text-xs uppercase tracking-[0.18em] text-slate-500 shadow-sm">
-                        <img src={testimonials[activeTestimonial].companyLogo} alt={testimonials[activeTestimonial].company} className="h-4 object-contain" />
-                        {testimonials[activeTestimonial].company}
+                      <div className="inline-flex items-center gap-3 rounded-full bg-white px-4 py-2 shadow-sm">
+                        <img
+                          src={testimonials[activeTestimonial].companyLogo}
+                          alt={`${testimonials[activeTestimonial].company} Logo`}
+                          className="h-6 w-auto object-contain"
+                        />
+                        <span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-600">
+                          {testimonials[activeTestimonial].company}
+                        </span>
                       </div>
                     </div>
                   </div>

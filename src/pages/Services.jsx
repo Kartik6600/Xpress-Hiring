@@ -104,36 +104,6 @@ function Services() {
           bottlenecks and connect your organization with pre-vetted,
           job-ready talent.
         </motion.p>
-
-        {/* Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="mt-14 grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-3xl"
-        >
-          {[
-            ["500+", "Placements"],
-            ["150+", "Clients"],
-            ["25+", "Industries"],
-          ].map(([number, label]) => (
-            <div
-              key={label}
-              className="h-36 rounded-2xl bg-white/10 border border-white/10 backdrop-blur-md
-                        flex flex-col items-center justify-center
-                        text-center hover:bg-white/15 transition-all duration-300"
-            >
-              <h3 className="text-5xl font-extrabold text-amber-400">
-                {number}
-              </h3>
-
-              <p className="mt-3 text-base font-medium text-gray-300">
-                {label}
-              </p>
-            </div>
-          ))}
-        </motion.div>
-
       </div>
     </div>
 
@@ -172,7 +142,7 @@ function Services() {
                   idx === 2 ? "from-orange-400 to-amber-400" :
                   idx === 3 ? "from-emerald-500 to-teal-400" :
                   idx === 4 ? "from-violet-500 to-fuchsia-500" :
-                  "from-rose-500 to-pink-500"
+                  "from-red-500 to-violet-500"
                 }`}
               />
 
@@ -183,7 +153,7 @@ function Services() {
                   idx === 2 ? "bg-amber-400" :
                   idx === 3 ? "bg-emerald-500" :
                   idx === 4 ? "bg-violet-500" :
-                  "bg-rose-500"
+                  "bg-red-500"
                 }`}
               />
 
@@ -195,7 +165,7 @@ function Services() {
                     idx === 2 ? "bg-amber-50 text-amber-600 border-amber-100 group-hover:bg-amber-500 group-hover:text-white" :
                     idx === 3 ? "bg-emerald-50 text-emerald-600 border-emerald-100 group-hover:bg-emerald-600 group-hover:text-white" :
                     idx === 4 ? "bg-violet-50 text-violet-600 border-violet-100 group-hover:bg-violet-600 group-hover:text-white" :
-                    "bg-rose-50 text-rose-600 border-rose-100 group-hover:bg-rose-600 group-hover:text-white"
+                    "bg-red-50 text-red-600 border-red-100 group-hover:bg-red-600 group-hover:text-white"
                   }`}
                 >
                   {svc.num}
@@ -208,7 +178,7 @@ function Services() {
                     idx === 2 ? "text-amber-500" :
                     idx === 3 ? "text-emerald-600" :
                     idx === 4 ? "text-violet-600" :
-                    "text-rose-600"
+                    "text-red-600"
                   }`}
                   fill="none"
                   stroke="currentColor"
@@ -311,22 +281,6 @@ function Services() {
             >
               Contact Us
             </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 pt-10 max-w-3xl mx-auto">
-            {[
-              ["25+", "Industries Served"],
-              ["150+", "Trusted Companies"],
-              ["500+", "Successful Placements"],
-            ].map(([num, label]) => (
-              <div
-                key={label}
-                className="rounded-2xl bg-white border border-slate-100 p-5 shadow-sm hover:shadow-lg transition"
-              >
-                <h3 className="text-2xl font-extrabold text-[#1349c5]">{num}</h3>
-                <p className="text-sm text-slate-500 mt-1">{label}</p>
-              </div>
-            ))}
           </div>
         </div>
       </section>

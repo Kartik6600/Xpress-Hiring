@@ -1,6 +1,7 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@400;600;700&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@400;600;700&display=swap');
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600;700&display=swap");
+/* Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap");
 
 @import "tailwindcss";
 
@@ -12,20 +13,12 @@
   --color-accent: #f59e0b;
   --color-dark: #0b0f19;
   --color-surface: #f8fafc;
-  --font-family-sans: 'Poppins', 'Inter', system-ui, sans-serif;
-}
 
-body {
-  font-family: "Inter", sans-serif;
-}
+  /* Default body font */
+  --font-family-sans: "Inter", system-ui, sans-serif;
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Poppins", sans-serif;
+  /* Heading font */
+  --font-family-heading: "Poppins", sans-serif;
 }
 
 /* ===== Global Base ===== */
@@ -46,18 +39,70 @@ body {
   color: #1e293b;
 }
 
+/* Body text fonts */
+p,
+span,
+button,
+input,
+textarea,
+select,
+label,
+a,
+li {
+  font-family: var(--font-family-sans);
+}
+
+/* Heading fonts */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-family-heading);
+}
+
 /* ===== Smooth scrollbar ===== */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: #f1f5f9; }
-::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 999px; }
-::-webkit-scrollbar-thumb:hover { background: #64748b; }
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
 
 /* ===== Utility Animations ===== */
 @keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-fade-in-up {
   animation: fade-in-up 0.6s ease-out both;
+}
+
+/* Hide scrollbar but keep scrolling */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

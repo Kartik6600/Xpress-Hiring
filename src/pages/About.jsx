@@ -188,45 +188,6 @@ function About() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/30 via-transparent to-transparent rounded-[32px]" />
             </motion.div>
-            
-            {/* Enhanced Statistics with Glass Effect and Animations */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-              className="
-                absolute left-1/2 bottom-6 w-[88%] -translate-x-1/2
-                grid grid-cols-2 gap-4
-                max-[420px]:gap-3
-              "
-            >
-              {[
-                { label: "Placements", value: "500", suffix: "+" },
-                { label: "Clients", value: "150", suffix: "+" },
-                { label: "Industries", value: "25", suffix: "+" },
-                { label: "Years", value: "6", suffix: "+" },
-              ].map((item) => (
-                <motion.div
-                  key={item.label}
-                  whileHover={{ y: -5, scale: 1.04 }}
-                  transition={{ duration: 0.3 }}
-                  className="
-                    rounded-2xl bg-white/95 backdrop-blur-md
-                    border border-white/50 shadow-xl
-                    px-5 py-4
-                    max-[420px]:px-4 max-[420px]:py-3
-                  "
-                >
-                  <p className="text-3xl max-[420px]:text-2xl font-extrabold text-blue-600">
-                    {item.value}{item.suffix}
-                  </p>
-                  <p className="mt-2 text-[12px] max-[420px]:text-[10px] uppercase tracking-[0.28em] text-slate-600 font-bold">
-                    {item.label}
-                  </p>
-                </motion.div>
-              ))}
-            </motion.div>
           </motion.div>
           
           {/* Enhanced Content Section */}
@@ -393,13 +354,13 @@ function About() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden py-24 px-6 bg-gradient-to-br from-slate-50 via-white to-blue-50">
+      <section className="relative overflow-hidden py-20 px-6 bg-gradient-to-br from-slate-50 via-white to-blue-50">
         <div className="absolute inset-0 bg-[radial-gradient(#1349c510_1px,transparent_1px)] [background-size:22px_22px]" />
         <div className="absolute top-20 left-10 w-72 h-72 bg-blue-300/20 rounded-full blur-3xl" />
         <div className="absolute bottom-20 right-10 w-72 h-72 bg-indigo-300/20 rounded-full blur-3xl" />
 
         <div className="relative max-w-6xl mx-auto">
-          <div className="text-center mb-20">
+          <div className="text-center mb-16">
             <span className="text-[#1349c5] text-xs font-bold uppercase tracking-widest">
               Our Journey
             </span>
@@ -425,23 +386,24 @@ function About() {
               className="absolute left-6 md:left-1/2 top-0 h-full w-[4px] origin-top -translate-x-1/2 rounded-full bg-gradient-to-b from-blue-600 via-indigo-600 to-amber-500"
             />
 
-            <div>
+            <div className="space-y-0">
               {timeline.map((item, i) => {
                 const isEven = i % 2 === 0;
+
                 const colors = [
                   "from-blue-600 to-indigo-600",
                   "from-emerald-500 to-teal-600",
                   "from-amber-500 to-orange-600",
-                  "from-rose-500 to-pink-600",
+                  "from-red-500 to-indigo-600",
                 ];
 
                 return (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0, x: isEven ? -80 : 80 }}
+                    initial={{ opacity: 0, x: isEven ? -60 : 60 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, amount: 0.35 }}
-                    transition={{ duration: 0.65, delay: i * 0.12 }}
+                    transition={{ duration: 0.6, delay: i * 0.1 }}
                     className={`relative flex items-center ${
                       isEven ? "md:justify-start" : "md:justify-end"
                     }`}
@@ -450,15 +412,19 @@ function About() {
                       initial={{ scale: 0 }}
                       whileInView={{ scale: 1 }}
                       viewport={{ once: true }}
-                      transition={{ type: "spring", stiffness: 220, delay: i * 0.15 }}
-                      className={`absolute left-6 md:left-1/2 z-20 flex h-14 w-14 -translate-x-1/2 items-center justify-center rounded-2xl bg-gradient-to-br ${
+                      transition={{
+                        type: "spring",
+                        stiffness: 220,
+                        delay: i * 0.12,
+                      }}
+                      className={`absolute left-6 md:left-1/2 z-20 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-2xl bg-gradient-to-br ${
                         colors[i % colors.length]
                       } text-white shadow-xl shadow-blue-500/30`}
                     >
                       <motion.svg
-                        animate={{ y: [0, -5, 0] }}
+                        animate={{ y: [0, -4, 0] }}
                         transition={{ duration: 2.5, repeat: Infinity }}
-                        className="h-7 w-7"
+                        className="h-6 w-6"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -473,50 +439,50 @@ function About() {
                     </motion.div>
 
                     <motion.div
-                      whileHover={{ y: -10, scale: 1.03 }}
+                      whileHover={{ y: -8, scale: 1.02 }}
                       transition={{ duration: 0.3 }}
-                      className={`group ml-20 md:ml-0 w-full md:w-[44%] rounded-[30px] border border-white/60 bg-white/80 p-7 shadow-xl backdrop-blur-xl transition-all duration-300 hover:border-blue-300 hover:shadow-2xl hover:shadow-blue-500/20 ${
-                        isEven ? "md:mr-auto md:text-right" : "md:ml-auto md:text-left"
+                      className={`group ml-20 md:ml-0 w-full md:w-[46%] rounded-[28px] border border-blue-100 bg-white/90 p-6 md:p-7 text-left shadow-xl backdrop-blur-xl transition-all duration-300 hover:border-blue-300 hover:shadow-2xl hover:shadow-blue-500/20 ${
+                        isEven ? "md:mr-auto" : "md:ml-auto"
                       }`}
                     >
-                      <div
-                        className={`inline-flex rounded-full bg-gradient-to-r ${
-                          colors[i % colors.length]
-                        } px-5 py-2 text-sm font-extrabold tracking-widest text-white shadow-lg`}
-                      >
-                        {item.year}
+                      <div className="flex justify-end">
+                        <div
+                          className={`rounded-full bg-gradient-to-r ${
+                            colors[i % colors.length]
+                          } px-5 py-2 text-xs font-extrabold tracking-widest text-white shadow-lg`}
+                        >
+                          {item.year}
+                        </div>
                       </div>
 
-                      <h3 className="mt-5 text-xl md:text-2xl font-extrabold text-slate-900">
+                      <h3 className="mt-5 max-w-md text-xl md:text-2xl font-extrabold leading-snug text-slate-900">
                         {item.event.split(".")[0]}
                       </h3>
 
-                      <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                      <p className="mt-3 text-sm md:text-base leading-7 text-slate-600">
                         {item.event}
                       </p>
 
-                      <div
-                        className={`mt-6 flex gap-2 ${
-                          isEven ? "md:justify-end" : "md:justify-start"
-                        }`}
-                      >
-                        <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">
+                      <div className="mt-5 flex flex-wrap gap-2">
+                        <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
                           Growth
                         </span>
-                        <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-bold text-amber-700">
+
+                        <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
                           Trust
                         </span>
-                        <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
+
+                        <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
                           Hiring
                         </span>
                       </div>
 
-                      <div className="mt-6 h-1 w-full overflow-hidden rounded-full bg-slate-100">
+                      <div className="mt-5 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
                         <motion.div
                           initial={{ width: 0 }}
                           whileInView={{ width: "100%" }}
                           viewport={{ once: true }}
-                          transition={{ duration: 1, delay: i * 0.15 }}
+                          transition={{ duration: 1, delay: i * 0.12 }}
                           className={`h-full bg-gradient-to-r ${
                             colors[i % colors.length]
                           }`}
@@ -532,6 +498,7 @@ function About() {
       </section>
 
       <section className="relative overflow-hidden bg-gradient-to-br from-[#0f3ea8] via-[#1349c5] to-indigo-800 text-white py-28 px-6">
+        {/* Background Effects */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.12),transparent_35%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(#ffffff12_1px,transparent_1px)] [background-size:24px_24px]" />
 
@@ -547,111 +514,81 @@ function About() {
           className="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-amber-400/20 blur-3xl"
         />
 
-        <div className="relative max-w-6xl mx-auto grid gap-14 lg:grid-cols-[1.15fr_0.85fr] items-center">
+        {/* Content */}
+        <div className="relative max-w-5xl mx-auto flex items-center justify-center text-center">
+
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="space-y-7"
+            className="space-y-8"
           >
-            <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-5 py-2 text-xs font-bold uppercase tracking-[0.3em] text-blue-100 backdrop-blur-md">
+
+            {/* Badge */}
+            <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-6 py-2 text-xs font-bold uppercase tracking-[0.3em] text-blue-100 backdrop-blur-md">
               Trusted Hiring Partner
             </span>
 
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
-              Ready to Transform <br />
-              <span className="text-amber-400">Your Hiring?</span>
+            {/* Heading */}
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
+              Ready to Transform
+              <br />
+              <span className="text-amber-400">
+                Your Hiring?
+              </span>
             </h2>
 
-            <p className="text-blue-100 max-w-2xl text-base md:text-lg leading-relaxed">
+            {/* Description */}
+            <p className="max-w-3xl mx-auto text-lg leading-relaxed text-blue-100">
               Partner with Xpress Talent Hiring and experience precision-matched,
               pre-vetted talent backed by proven recruitment success.
             </p>
 
-            <p className="text-sm font-semibold text-white/90">
+            {/* Stats */}
+            <p className="text-sm md:text-base font-semibold text-white/90">
               Trusted by 150+ Companies • 500+ Successful Placements • 25+ Industries
             </p>
 
-            <div className="flex flex-wrap gap-4 pt-4">
-              <motion.div whileHover={{ scale: 1.07, y: -4 }}>
+            {/* Buttons */}
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-5 pt-4">
+
+              <motion.div whileHover={{ scale: 1.06, y: -4 }}>
                 <Link
                   to="/employers"
-                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-3xl bg-amber-500 px-10 py-4 text-base font-extrabold text-slate-950 shadow-2xl shadow-amber-500/40 transition duration-300"
+                  className="group inline-flex items-center justify-center rounded-3xl bg-amber-500 px-10 py-4 font-bold text-slate-900 shadow-2xl shadow-amber-500/30 transition-all duration-300 hover:bg-amber-400"
                 >
-                  <span className="relative z-10 flex items-center gap-2">
-                    Post a Requirement
-                    <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                  </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  Post a Requirement
+
+                  <svg
+                    className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M13 7l5 5m0 0l-5 5m5-5H6"
+                    />
+                  </svg>
                 </Link>
               </motion.div>
 
-              <motion.div whileHover={{ scale: 1.07, y: -4 }}>
+              <motion.div whileHover={{ scale: 1.06, y: -4 }}>
                 <Link
                   to="/contact"
-                  className="group inline-flex items-center justify-center rounded-3xl border-2 border-white/40 bg-white/15 px-10 py-4 text-base font-extrabold text-white backdrop-blur-md transition duration-300 hover:border-amber-400 hover:bg-white/25 hover:shadow-xl"
+                  className="inline-flex items-center justify-center rounded-3xl border border-white/40 bg-white/10 px-10 py-4 font-bold backdrop-blur-md transition-all duration-300 hover:border-white hover:bg-white/20"
                 >
                   Talk to Our Team
                 </Link>
               </motion.div>
+
             </div>
+
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.15 }}
-            className="grid gap-5"
-          >
-            {[
-              {
-                title: "Successful Placements",
-                value: "500+",
-                icon: "M5 13l4 4L19 7",
-              },
-              {
-                title: "Trusted Clients",
-                value: "150+",
-                icon: "M17 20h5v-2a4 4 0 00-5-3.87M9 20H4v-2a4 4 0 015-3.87M12 12a4 4 0 100-8 4 4 0 000 8z",
-              },
-              {
-                title: "Industries Served",
-                value: "25+",
-                icon: "M3 21h18M5 21V7l8-4v18M19 21V11l-6-4",
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                whileHover={{ y: -8, scale: 1.04 }}
-                transition={{ duration: 0.3 }}
-                className="group rounded-[28px] border border-white/20 bg-white/10 p-6 shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-amber-400/50 hover:bg-white/15"
-              >
-                <div className="flex items-center gap-5">
-                  <motion.div
-                    whileHover={{ rotate: 10, scale: 1.15 }}
-                    className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 text-amber-400 shadow-lg"
-                  >
-                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.4" d={item.icon} />
-                    </svg>
-                  </motion.div>
-
-                  <div>
-                    <p className="text-4xl font-extrabold text-white">
-                      {item.value}
-                    </p>
-                    <p className="mt-1 text-sm uppercase tracking-widest text-blue-100 font-semibold">
-                      {item.title}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
         </div>
       </section>
     </div>
