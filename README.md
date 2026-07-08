@@ -2,7 +2,7 @@
 
 Official website for **Xpress Talent Hiring LLP**, a modern and responsive recruitment platform connecting talented candidates with top employers.
 
-🌐 **Live Website:** http://localhost:5173/
+🌐 **Live Website:** [xpress-hiring.vercel.app/](https://xpress-hiring.vercel.app/)
 
 ---
 
