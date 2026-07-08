@@ -134,7 +134,7 @@ The website is fully responsive and optimized for:
 
 ## 📷 Screenshots
 
-Add screenshots of your website here after deployment.
+<img width="1919" height="867" alt="Screenshot 2026-07-04 122030" src="https://github.com/user-attachments/assets/6f3b0a29-0614-4e64-bcd4-15bbb2f2cb7e" />
 
 ---
 
