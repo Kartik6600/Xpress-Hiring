@@ -37,6 +37,14 @@ function Login() {
     setTimeout(() => setLoading(false), 1500);
   };
 
+  const handleGoogleLogin = () => {
+    window.open(
+      "https://accounts.google.com/AccountChooser",
+      "_blank",
+      "noopener,noreferrer",
+    );
+  };
+
   const trustStats = [
     { value: "500+", label: "Successful Placements" },
     { value: "150+", label: "Trusted Companies" },
@@ -44,42 +52,21 @@ function Login() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50 flex items-center justify-center px-4 py-16">
+    <div className="min-h-screen bg-[#e5e7eb] flex items-center justify-center px-4 py-16">
       <motion.div
         initial={{ opacity: 0, y: 28 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
-        className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 shadow-2xl rounded-3xl overflow-hidden bg-white"
+        className="grid w-full max-w-6xl grid-cols-1 overflow-hidden rounded-[34px] border-[10px] border-white bg-white shadow-[0_24px_80px_-40px_rgba(15,23,42,.65)] lg:grid-cols-[1.05fr_.95fr]"
       >
         {/* Left Panel */}
-        <div className="relative bg-gradient-to-br from-[#1349c5] via-blue-700 to-indigo-900 text-white p-10 lg:p-12 flex flex-col justify-between overflow-hidden min-h-[520px]">
-          <div className="absolute inset-0 bg-[radial-gradient(#ffffff14_1px,transparent_1px)] [background-size:22px_22px]" />
-
-          <motion.div
-            animate={{ scale: [1, 1.25, 1], opacity: [0.15, 0.35, 0.15] }}
-            transition={{ duration: 6, repeat: Infinity }}
-            className="absolute -bottom-16 -right-16 w-72 h-72 rounded-full bg-amber-300 blur-3xl"
-          />
-
-          <motion.div
-            animate={{ y: [0, -18, 0] }}
-            transition={{ duration: 5, repeat: Infinity }}
-            className="absolute top-24 right-10 w-28 h-28 rounded-3xl bg-white/10 border border-white/20 backdrop-blur-md rotate-12"
-          />
-
-          <motion.div
-            animate={{ y: [0, 16, 0] }}
-            transition={{ duration: 4.5, repeat: Infinity }}
-            className="absolute bottom-36 left-10 w-20 h-20 rounded-full bg-white/10 border border-white/20 backdrop-blur-md"
-          />
+        <div className="relative flex min-h-[620px] flex-col justify-between overflow-hidden bg-[#1349c5] p-8 text-white sm:p-11 lg:min-h-[680px]">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_20%,rgba(255,255,255,.22),transparent_28%),linear-gradient(135deg,#1349c5,#082d57)]" />
+          <div className="absolute -right-8 top-0 hidden h-full w-16 rounded-l-[40px] bg-white lg:block" />
 
           <div className="relative space-y-7">
             <div>
-              <span className="inline-flex items-center rounded-full bg-white/10 border border-white/20 px-4 py-2 text-xs font-bold uppercase tracking-widest text-blue-100">
-                Secure Hiring Portal
-              </span>
-
-              <h2 className="text-4xl font-extrabold leading-tight mt-5">
+              <h2 className="text-4xl font-extrabold leading-tight mt-12 sm:text-5xl">
                 Welcome Back
                 <br />
                 to XTH Portal
@@ -92,32 +79,11 @@ function Login() {
               </p>
             </div>
 
-            {/* Illustration Card */}
-            <div className="relative bg-white/10 border border-white/20 backdrop-blur-md rounded-3xl p-5 shadow-xl max-w-sm">
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-2xl bg-amber-400 flex items-center justify-center shadow-lg">
-                  <svg
-                    className="w-8 h-8 text-slate-900"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14c-4.418 0-8 2.239-8 5v1h16v-1c0-2.761-3.582-5-8-5z"
-                    />
-                  </svg>
-                </div>
-
-                <div>
-                  <p className="text-sm font-bold">Smart Hiring Access</p>
-                  <p className="text-xs text-blue-100 mt-1">
-                    Fast, safe and professional login experience.
-                  </p>
-                </div>
-              </div>
+            <div className="relative mt-10 max-w-md rounded-[28px] border border-white/15 bg-white/10 p-6">
+              <p className="text-sm font-bold text-amber-400">Smart Hiring Access</p>
+              <p className="mt-2 text-sm leading-6 text-blue-100">
+                A clean and secure way to manage applications, profiles, and hiring conversations.
+              </p>
             </div>
           </div>
 
@@ -156,13 +122,13 @@ function Login() {
         </div>
 
         {/* Right Panel */}
-        <div className="bg-white p-8 sm:p-10 lg:p-12 flex flex-col justify-center">
+        <div className="relative flex flex-col justify-center bg-white p-8 sm:p-10 lg:rounded-l-[28px] lg:p-16">
           <div className="mb-8">
             <motion.h3
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-3xl font-extrabold text-slate-900"
+              className="text-3xl font-extrabold text-slate-900 sm:text-4xl"
             >
               Sign In
             </motion.h3>
@@ -172,7 +138,7 @@ function Login() {
           </div>
 
           {/* Role Toggle */}
-          <div className="grid grid-cols-2 gap-3 mb-8">
+          <div className="mb-8 grid grid-cols-2 gap-4">
             {[
               {
                 id: "candidate",
@@ -241,6 +207,27 @@ function Login() {
                 </div>
               </button>
             ))}
+          </div>
+
+          {/* Google Sign In */}
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            className="mb-5 flex w-full items-center justify-center gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 transition-all duration-200 hover:border-blue-200 hover:bg-blue-50/40 hover:shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-100"
+          >
+            <svg className="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="#4285F4" d="M21.6 12.23c0-.71-.06-1.4-.18-2.07H12v3.91h5.38a4.6 4.6 0 0 1-2 3.02v2.54h3.24c1.9-1.75 2.98-4.32 2.98-7.4Z" />
+              <path fill="#34A853" d="M12 22c2.7 0 4.96-.9 6.62-2.42l-3.24-2.53c-.9.6-2.05.96-3.38.96-2.6 0-4.81-1.76-5.6-4.13H3.06v2.62A10 10 0 0 0 12 22Z" />
+              <path fill="#FBBC05" d="M6.4 13.88A6 6 0 0 1 6.09 12c0-.65.11-1.29.31-1.88V7.5H3.06A10 10 0 0 0 2 12c0 1.61.39 3.14 1.06 4.5l3.34-2.62Z" />
+              <path fill="#EA4335" d="M12 5.99c1.47 0 2.79.5 3.82 1.49l2.87-2.87A9.63 9.63 0 0 0 12 2a10 10 0 0 0-8.94 5.5l3.34 2.62C7.19 7.75 9.4 5.99 12 5.99Z" />
+            </svg>
+            Continue with Google
+          </button>
+
+          <div className="mb-5 flex items-center gap-4" aria-hidden="true">
+            <span className="h-px flex-1 bg-slate-200" />
+            <span className="text-[11px] font-bold uppercase tracking-widest text-slate-400">OR</span>
+            <span className="h-px flex-1 bg-slate-200" />
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -427,3 +414,6 @@ function Login() {
 }
 
 export default Login;
+
+
+

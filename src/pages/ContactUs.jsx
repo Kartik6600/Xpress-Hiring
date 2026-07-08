@@ -44,32 +44,33 @@ function ContactUs() {
 
   return (
     <div>
-     <div className="relative overflow-hidden bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900 text-white py-20 lg:py-24">
+     <div className="relative overflow-hidden bg-[#f3f0e9] py-20 text-slate-950 lg:py-24">
 
       {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:20px_20px]" />
+      <div className="hidden" />
 
       {/* Animated Glow */}
       <motion.div
         animate={{ x: [0, -60, 0], y: [0, 40, 0] }}
         transition={{ duration: 15, repeat: Infinity }}
-        className="absolute top-10 right-10 w-72 h-72 rounded-full bg-indigo-500/20 blur-3xl"
+        className="hidden"
       />
 
       <motion.div
         animate={{ x: [0, 50, 0], y: [0, -30, 0] }}
         transition={{ duration: 18, repeat: Infinity }}
-        className="absolute bottom-0 left-0 w-64 h-64 rounded-full bg-amber-400/10 blur-3xl"
+        className="hidden"
       />
 
-      <div className="relative max-w-5xl mx-auto px-6 text-center">
+      <div className="relative mx-auto max-w-6xl border-l-4 border-[#1349c5] px-6 pl-10 text-left">
 
         {/* Badge */}
         <motion.span
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="inline-flex rounded-full bg-white/10 border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.3em] text-amber-300"
+          className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-[#1349c5] shadow-sm"
         >
+          <span className="h-2 w-2 rounded-full bg-emerald-500" />
           Get In Touch
         </motion.span>
 
@@ -78,11 +79,11 @@ function ContactUs() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="mt-6 text-4xl md:text-6xl font-extrabold leading-tight"
+          className="mt-6 max-w-4xl text-4xl font-extrabold leading-[1.05] tracking-[-.05em] md:text-6xl"
         >
-          Let's Build Your{" "}
-          <span className="text-amber-400">
-            Perfect Team
+          Start with a conversation.{" "}
+          <span className="text-[#1349c5]">
+            We are listening.
           </span>
         </motion.h1>
 
@@ -91,16 +92,21 @@ function ContactUs() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="mt-6 max-w-3xl mx-auto text-lg leading-8 text-slate-300"
+          className="mt-6 max-w-2xl text-base leading-8 text-slate-600 md:text-lg"
         >
-          Have questions or need a customized hiring solution? Our recruitment
-          experts are here to help you connect with the right talent quickly and
-          efficiently. Let's start building your workforce today.
+          Tell us what you are working through. Whether you are hiring, looking for a role, or simply need an answer, the right person from our team will get back to you.
         </motion.p>
+        <div className="mt-7 flex flex-wrap gap-2">
+          {["Human reviewed", "Priority follow-up"].map((item) => (
+            <span key={item} className="rounded-full bg-white/80 px-3 py-1.5 text-xs font-bold text-[#1349c5] shadow-sm">
+              {item}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
 
-      <section className="relative bg-slate-50 px-6 py-20">
+      <section className="relative bg-[#fafafa] px-6 py-20">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
 
@@ -111,7 +117,13 @@ function ContactUs() {
           viewport={{ once: true }}
           className="lg:col-span-6"
         >
-          <div className="relative h-full min-h-[700px] overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl">
+          <div className="relative h-full min-h-[700px] overflow-hidden border border-slate-200 bg-white">
+            <motion.div
+              aria-hidden="true"
+              animate={{ y: ["-20%", "120%"] }}
+              transition={{ duration: 3.5, repeat: Infinity, ease: "linear" }}
+              className="pointer-events-none absolute inset-x-0 z-10 h-24 bg-gradient-to-b from-transparent via-[#1349c5]/10 to-transparent"
+            />
 
             {/* Google Map */}
             <iframe
@@ -124,12 +136,15 @@ function ContactUs() {
             />
 
               {/* Floating Card */}
-              <div className="absolute bottom-6 left-6 right-6 rounded-2xl bg-white/95 backdrop-blur-md border border-slate-200 p-5 shadow-xl">
+              <div className="absolute bottom-5 left-5 right-5 border-l-4 border-amber-400 bg-white p-5 shadow-md">
 
                 <div className="flex items-start gap-4">
 
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#1349c5] text-xl text-white shadow-lg">
-                    📍
+                    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                      <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" />
+                      <circle cx="12" cy="10" r="2.5" />
+                    </svg>
                   </div>
 
                   <div className="flex-1">
@@ -146,7 +161,7 @@ function ContactUs() {
                       href="https://www.google.com/maps/search/?api=1&query=Dev+Aurum+Complex+Ahmedabad"
                       target="_blank"
                       rel="noreferrer"
-                      className="mt-4 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#1349c5] to-indigo-700 px-5 py-3 text-sm font-semibold text-white transition hover:shadow-lg"
+                      className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#1349c5] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-800"
                     >
                      Get Directions →
                     </a>
@@ -161,9 +176,15 @@ function ContactUs() {
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="lg:col-span-6 rounded-3xl border border-slate-100 bg-white p-8 shadow-lg"
+              className="relative overflow-hidden border border-slate-200 bg-white p-8 lg:col-span-6"
             >
-              <span className="inline-flex rounded-full bg-blue-50 px-4 py-2 text-xs font-bold uppercase tracking-widest text-[#1349c5]">
+              <motion.div
+                aria-hidden="true"
+                animate={{ x: ["-120%", "120%"] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#1349c5]/50 to-transparent"
+              />
+              <span className="inline-flex border-l-2 border-[#1349c5] pl-3 text-xs font-bold uppercase tracking-widest text-[#1349c5]">
                 Contact Form
               </span>
 
@@ -174,6 +195,13 @@ function ContactUs() {
               <p className="mt-2 text-sm text-slate-500">
                 We typically respond within 24 business hours.
               </p>
+              <div className="mt-5 grid grid-cols-3 gap-2">
+                {["Understand", "Route", "Reply"].map((item) => (
+                  <span key={item} className="rounded-full bg-blue-50 px-3 py-2 text-center text-[11px] font-bold text-[#1349c5]">
+                    {item}
+                  </span>
+                ))}
+              </div>
 
               {success ? (
                 <motion.div
@@ -221,7 +249,7 @@ function ContactUs() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div className="relative">
                       <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                        👤
+                        <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21a8 8 0 0 0-16 0" /><circle cx="12" cy="7" r="4" /></svg>
                       </span>
                       <input
                         type="text"
@@ -237,7 +265,7 @@ function ContactUs() {
 
                     <div className="relative">
                       <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                        📞
+                        <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.8 19.8 0 0 1 3.09 5.18 2 2 0 0 1 5.11 3h3a2 2 0 0 1 2 1.72c.12.9.32 1.77.59 2.6a2 2 0 0 1-.45 2.11L9 10.69a16 16 0 0 0 4.31 4.31l1.26-1.25a2 2 0 0 1 2.11-.45c.83.27 1.7.47 2.6.59A2 2 0 0 1 22 16.92Z" /></svg>
                       </span>
                       <input
                         type="tel"
@@ -254,7 +282,7 @@ function ContactUs() {
 
                   <div className="relative">
                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                      ✉️
+                      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16v16H4z" /><path d="m22 6-10 7L2 6" /></svg>
                     </span>
                     <input
                       type="email"
@@ -270,7 +298,7 @@ function ContactUs() {
 
                   <div className="relative">
                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                      📝
+                      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16" /><path d="M4 12h16" /><path d="M4 17h10" /></svg>
                     </span>
                     <select
                       value={formData.subject}
@@ -289,7 +317,7 @@ function ContactUs() {
 
                   <div className="relative">
                     <span className="absolute left-4 top-4 text-slate-400">
-                      💬
+                      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" /></svg>
                     </span>
                     <textarea
                       required
@@ -305,10 +333,10 @@ function ContactUs() {
 
                   <motion.button
                     type="submit"
-                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileHover={{ y: -1 }}
                     whileTap={{ scale: 0.98 }}
                     disabled={loading}
-                    className="w-full rounded-xl bg-gradient-to-r from-[#1349c5] to-indigo-700 py-4 text-sm font-bold uppercase tracking-widest text-white shadow-lg transition hover:shadow-xl disabled:opacity-70 flex items-center justify-center gap-2"
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#1349c5] py-4 text-sm font-bold uppercase tracking-widest text-white transition-colors hover:bg-blue-800 disabled:opacity-70"
                   >
                     {loading ? (
                       <>
@@ -335,45 +363,6 @@ function ContactUs() {
                   </motion.button>
                 </motion.form>
               )}
-
-              {/* Quick Details */}
-              <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-slate-100 pt-6">
-                <div>
-                  <p className="text-xs font-bold uppercase text-slate-400">
-                    Phone
-                  </p>
-                  <p className="mt-1 text-sm font-semibold text-slate-700">
-                    +91 98765 43210
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs font-bold uppercase text-slate-400">
-                    Email
-                  </p>
-                  <p className="mt-1 text-sm font-semibold text-slate-700">
-                    info@xpresshiring.com
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs font-bold uppercase text-slate-400">
-                    Office Hours
-                  </p>
-                  <p className="mt-1 text-sm font-semibold text-slate-700">
-                    Mon - Sat, 10:00 AM - 7:00 PM
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs font-bold uppercase text-slate-400">
-                    Trusted By
-                  </p>
-                  <p className="mt-1 text-sm font-semibold text-slate-700">
-                    150+ Companies
-                  </p>
-                </div>
-              </div>
             </motion.div>
           </div>
         </div>

@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import {
+  motion,
+  AnimatePresence,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from 'framer-motion';
 import { Link } from 'react-router-dom';
+import loginProfessional from '../assets/login-professional.png';
 
 const bannerSlides = [
   {
@@ -12,26 +20,6 @@ const bannerSlides = [
     cta1Link: "/candidates",
     cta2: "Register Company",
     cta2Link: "/employers"
-  },
-  {
-    tagline: "Bridging the gap between Talent & Opportunity",
-    title: "Instant Matching Portal",
-    description: "Pre-screened candidates matching customized organizational requirements instantly.",
-    bg: "from-indigo-950 via-blue-900 to-indigo-900",
-    cta1: "Register Profile",
-    cta1Link: "/candidates",
-    cta2: "Post a Requirement",
-    cta2Link: "/employers"
-  },
-  {
-    tagline: "Accelerating Careers in Premium Sectors",
-    title: "One-Stop Solutions",
-    description: "End-to-end recruitment, sourcing, selection, and replacement solutions.",
-    bg: "from-blue-950 via-blue-900 to-slate-900",
-    cta1: "Our Services",
-    cta1Link: "/services",
-    cta2: "Contact Us",
-    cta2Link: "/contact"
   }
 ];
 
@@ -130,6 +118,17 @@ const tagStyles = {
   Creative: 'bg-fuchsia-100 text-fuchsia-700'
 };
 
+const jobCategories = [
+  { name: 'Banking Finance', count: 18, description: 'Branch, accounts, relationship and back-office roles.', accent: 'bg-[#1349c5]', path: 'M4 10h16M5 10v8m4-8v8m6-8v8m4-8v8M3 21h18M12 3 3 8h18l-9-5Z' },
+  { name: 'Insurance', count: 12, description: 'Advisory, policy servicing and field support openings.', accent: 'bg-emerald-600', path: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Zm-3-10 2 2 4-4' },
+  { name: 'IT & ITES', count: 24, description: 'Developer, support, design and operations positions.', accent: 'bg-indigo-600', path: 'M8 9 4 12l4 3m8-6 4 3-4 3m-3-8-2 10M4 4h16v16H4z' },
+  { name: 'Retail', count: 16, description: 'Store, customer service and team supervisor jobs.', accent: 'bg-teal-600 ', path: 'M3 9h18l-2-5H5L3 9Zm2 0v11h14V9M9 20v-6h6v6' },
+  { name: 'E-Commerce', count: 14, description: 'Catalog, logistics, marketplace and support roles.', accent: 'bg-sky-600', path: 'M3 4h2l2 11h10l3-7H6m2 11a1 1 0 1 0 0 .01M17 19a1 1 0 1 0 0 .01' },
+  { name: 'Sales & Marketing', count: 21, description: 'Field sales, digital marketing and growth roles.', accent: 'bg-amber-500', path: 'M4 19V9m6 10V5m6 14v-7m4 7H2m3-7 5-4 5 2 5-6' },
+  { name: 'Healthcare', count: 10, description: 'Front desk, coordination and healthcare support jobs.', accent: 'bg-rose-600', path: 'M12 21S3 16 3 9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 7-9 12-9 12Zm0-11v6m-3-3h6' },
+  { name: 'MSME', count: 19, description: 'Admin, production, operations and business support.', accent: 'bg-violet-600', path: 'M4 21V8l6-4v17m0-10 5-3v13m0-7 5-2v9M2 21h20M7 10h.01m0 4h.01m0 4h.01' },
+];
+
 const stats = [
   {
     value: "500+",
@@ -143,8 +142,8 @@ const stats = [
     )
   },
   {
-    value: "150+",
-    count: 150,
+    value: "100+",
+    count: 100,
     suffix: "+",
     label: "Client Companies",
     icon: (
@@ -186,22 +185,20 @@ const partnerLogos = [
   "/logo 6.png"
 ];
 
-const logoLoop = [...partnerLogos, ...partnerLogos];
-
 const testimonials = [
   {
-    quote: "Xpress Talent Sourcing helped me land my dream role in under two weeks. The pre-placement screening and support was stellar!",
+    quote: "I was not sent a random list of openings. The team understood the kind of work I wanted, prepared me for the conversation, and I joined within two weeks.",
     name: "Aman Sharma",
     initials: "AS",
     role: "Admin Manager",
     industry: "BFSI",
     company: "Atria Finance",
-    rating: 5,
+    rating: 3.5,
     image: "https://api.dicebear.com/6.x/adventurer/svg?seed=Aman",
     companyLogo: "/logo 1.png"
   },
   {
-    quote: "Very reliable and pre-screened talent supply. It significantly lowered our corporate hiring costs and sourcing cycle time.",
+    quote: "The shortlist was small, but every profile made sense. That saved our managers hours of screening and helped us make a decision much faster.",
     name: "Meera Patel",
     initials: "MP",
     role: "HR Partner",
@@ -212,18 +209,18 @@ const testimonials = [
     companyLogo: "/logo 2.png"
   },
   {
-    quote: "Highly recommend for entry-level placements. The training modules candidates complete make onboarding smooth and easy.",
+    quote: "The candidates arrived knowing what the role involved. We spent less time explaining the basics and more time helping them settle into the team.",
     name: "Rohan Mehta",
     initials: "RM",
     role: "Operations Lead",
     industry: "MSME",
     company: "Novus Retail",
-    rating: 5,
+    rating: 4.5,
     image: "https://api.dicebear.com/6.x/adventurer/svg?seed=Rohan",
     companyLogo: "/logo 3.png"
   },
   {
-    quote: "Their sourcing process is transparent and fast. We onboarded three hires in a single week with great quality.",
+    quote: "We always knew what stage each candidate was at. Three people joined in the same week, and the process never felt rushed or unclear.",
     name: "Sneha Iyer",
     initials: "SI",
     role: "Talent Lead",
@@ -240,7 +237,7 @@ const testimonials = [
     role: "Recruitment Head",
     industry: "Manufacturing",
     company: "PixelEdge",
-    rating: 5,
+    rating: 4,
     image: "https://api.dicebear.com/6.x/adventurer/svg?seed=Vikram",
     companyLogo: "/logo 5.png"
   }
@@ -297,12 +294,30 @@ const childVariants = {
 };
 
 function Home() {
-  const [[slideIndex, direction], setSlide] = useState([0, 0]);
+  const prefersReducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll();
+  const smoothScrollProgress = useSpring(scrollYProgress, {
+    stiffness: 110,
+    damping: 24,
+    restDelta: 0.001,
+  });
+  const heroContentY = useTransform(
+    scrollYProgress,
+    [0, 0.16],
+    [0, prefersReducedMotion ? 0 : 42],
+  );
+  const heroVisualY = useTransform(
+    scrollYProgress,
+    [0, 0.16],
+    [0, prefersReducedMotion ? 0 : 80],
+  );
   const [searchKeywords, setSearchKeywords] = useState('');
   const [selectedCity, setSelectedCity] = useState('All City');
   const [selectedIndustry, setSelectedIndustry] = useState('Industry');
   const [selectedExp, setSelectedExp] = useState('Experience');
   const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const [testimonialDirection, setTestimonialDirection] = useState(1);
+  const [showAllAdvantages, setShowAllAdvantages] = useState(false);
   const [alertMsg, setAlertMsg] = useState(null);
   const [savedJobs, setSavedJobs] = useState([]);
   const [animatedStats, setAnimatedStats] = useState(stats.map(() => 0));
@@ -315,26 +330,6 @@ function Home() {
       return next;
     });
   };
-
-  const paginate = (newDirection) => {
-    let nextIndex = (slideIndex + newDirection) % bannerSlides.length;
-    if (nextIndex < 0) nextIndex = bannerSlides.length - 1;
-    setSlide([nextIndex, newDirection]);
-  };
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      paginate(1);
-    }, 6000);
-    return () => clearInterval(timer);
-  }, [slideIndex]);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
 
   useEffect(() => {
     const duration = 1400;
@@ -360,766 +355,589 @@ function Home() {
     setAlertMsg(`Searching for "${searchKeywords}" in ${selectedCity} (${selectedIndustry}, ${selectedExp})...`);
   };
 
+  const goToTestimonial = (index) => {
+    setTestimonialDirection(index > activeTestimonial ? 1 : -1);
+    setActiveTestimonial(index);
+  };
+
   const previousTestimonial = () => {
+    setTestimonialDirection(-1);
     setActiveTestimonial((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
   };
 
   const nextTestimonial = () => {
+    setTestimonialDirection(1);
     setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col overflow-x-hidden">
+      <motion.div
+        aria-hidden="true"
+        className="fixed inset-x-0 top-0 z-[70] h-0.5 origin-left bg-[#1349c5]"
+        style={{ scaleX: smoothScrollProgress }}
+      />
 
-{/* 1. Hero Banner Slider */}
-<div
-  className="relative overflow-hidden text-white bg-slate-950 group min-h-[auto] lg:min-h-[620px]"
-  style={{ perspective: 1200 }}
->
-  {/* Animated Background */}
-  <div className="absolute inset-0 overflow-hidden pointer-events-none">
-    <motion.div
-      animate={{
-        scale: [1, 1.2, 0.9, 1.1, 1],
-        x: [0, 30, -20, 15, 0],
-        y: [0, -25, 40, -15, 0],
-      }}
-      transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-      className="absolute top-10 left-0 w-56 h-56 sm:w-80 sm:h-80 rounded-full bg-blue-500/20 blur-3xl"
-    />
-
-    <motion.div
-      animate={{
-        scale: [1, 0.8, 1.1, 0.9, 1],
-        x: [0, -30, 25, -10, 0],
-        y: [0, 35, -20, 25, 0],
-      }}
-      transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-      className="absolute bottom-10 right-0 w-64 h-64 sm:w-96 sm:h-96 rounded-full bg-indigo-500/20 blur-3xl"
-    />
-
-    <div className="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px] opacity-70" />
-  </div>
-
-  <AnimatePresence initial={false} custom={direction} mode="wait">
-    <motion.div
-      key={slideIndex}
-      custom={direction}
-      variants={slideVariants}
-      initial="enter"
-      animate="center"
-      exit="exit"
-      className={`relative lg:absolute lg:inset-0 flex items-start lg:items-center justify-center px-4 sm:px-6 pt-28 sm:pt-32 lg:pt-0 pb-24 sm:pb-28 lg:pb-0 bg-gradient-to-br ${bannerSlides[slideIndex].bg}`}
-      style={{ transformStyle: "preserve-3d" }}
-    >
-      <div
-        className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.25fr_0.9fr] gap-8 lg:gap-12 items-center"
-        style={{ transformStyle: "preserve-3d" }}
-      >
-        {/* Left Content */}
-        <div className="space-y-5 sm:space-y-6 text-center lg:text-left">
-          <motion.span
-            variants={childVariants}
-            className="block max-w-[330px] sm:max-w-none mx-auto lg:mx-0 text-amber-400 font-bold text-[10px] sm:text-xs md:text-sm leading-relaxed tracking-[0.16em] sm:tracking-[0.25em] uppercase"
-          >
-            {bannerSlides[slideIndex].tagline}
-          </motion.span>
-
-          <motion.h2
-            variants={childVariants}
-            className="max-w-4xl mx-auto lg:mx-0 text-[32px] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] text-white drop-shadow-md"
-          >
-            {bannerSlides[slideIndex].title}
-          </motion.h2>
-
-          <motion.p
-            variants={childVariants}
-            className="text-sm sm:text-base md:text-lg text-gray-200 max-w-[340px] sm:max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed"
-          >
-            {bannerSlides[slideIndex].description}
+    {/* 1. Reference-inspired Hero */}
+    <section className="relative min-h-[720px] overflow-hidden bg-[#f3f0e9]">
+      <div className="relative mx-auto grid min-h-[720px] max-w-7xl items-center gap-12 px-5 py-16 sm:px-8 lg:grid-cols-[.92fr_1.08fr] lg:px-10 lg:py-10">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: .65 }}
+          style={{ y: heroContentY }}
+          className="relative z-10 text-center lg:text-left"
+        >
+          <motion.p variants={childVariants} className="mb-6 text-xs font-black uppercase tracking-[.22em] text-[#1349c5]">
+            Lets start your career here!
+          </motion.p>
+          <motion.h1 variants={childVariants} className="mx-auto max-w-2xl text-[42px] font-black leading-[1.12] tracking-[-.045em] text-slate-950 sm:text-6xl lg:mx-0">
+            Looking for a career? Browse our job listings now!
+          </motion.h1>
+          <motion.p variants={childVariants} className="mx-auto mt-6 max-w-xl text-sm leading-7 text-slate-500 sm:text-base lg:mx-0">
+            Find verified roles across BFSI, retail, IT-ITES, sales, support, and operations. Our team helps you move from search to real conversations with employers.
           </motion.p>
 
-          <motion.div
-            variants={childVariants}
-            className="flex flex-nowrap items-center gap-3 pt-2 w-full sm:w-auto"
-          >
+          <motion.div variants={childVariants} className="mt-9 flex justify-center lg:justify-start">
             <Link
-              to={bannerSlides[slideIndex].cta1Link}
-              className="relative flex-1 sm:flex-none min-w-0 h-14 px-6 rounded-xl
-                        bg-amber-500 hover:bg-amber-600
-                        text-slate-950 font-bold text-sm
-                        flex items-center justify-center
-                        shadow-lg shadow-amber-500/20
-                        transition-all duration-300 hover:scale-105"
+              to="/jobs"
+              className="inline-flex min-w-[158px] items-center justify-center rounded-md bg-[#1349c5] px-8 py-4 text-xs font-black uppercase tracking-[.08em] text-white transition hover:bg-blue-800"
             >
-              <span className="truncate">
-                {bannerSlides[slideIndex].cta1}
-              </span>
-            </Link>
-
-            <Link
-              to={bannerSlides[slideIndex].cta2Link}
-              className="relative flex-1 sm:flex-none min-w-0 h-14 px-6 rounded-xl
-                        bg-white/5 hover:bg-white/10
-                        border-2 border-white/50 hover:border-white
-                        text-white font-bold text-sm
-                        flex items-center justify-center
-                        backdrop-blur-sm
-                        transition-all duration-300 hover:scale-105"
-            >
-              <span className="truncate">
-                {bannerSlides[slideIndex].cta2}
-              </span>
+              Browse Job
             </Link>
           </motion.div>
-        </div>
+        </motion.div>
 
-        {/* Right Card */}
-        <motion.div
-          variants={childVariants}
-          className="relative w-full max-w-md mx-auto lg:max-w-none rounded-[28px] sm:rounded-[32px] border border-white/10 bg-white/10 p-4 sm:p-6 shadow-2xl backdrop-blur-xl overflow-hidden"
-        >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.35),transparent_45%)] pointer-events-none" />
+        <motion.div style={{ y: heroVisualY }} className="relative z-10 mx-auto h-[430px] w-full max-w-[620px] sm:h-[580px]">
+          <div className="absolute left-[16%] top-[25%] h-[250px] w-[340px] -rotate-12 rounded-[48%_52%_45%_55%] bg-[#1349c5] sm:h-[340px] sm:w-[450px]" />
+          <div className="absolute right-[2%] top-[23%] h-[270px] w-[310px] rotate-6 rounded-[48%_52%_44%_56%] bg-[#10214c] sm:h-[390px] sm:w-[410px]" />
+          <div className="absolute bottom-[3%] left-[26%] h-[120px] w-[310px] -rotate-6 rounded-full bg-[#1349c5] sm:h-[150px] sm:w-[390px]" />
 
-          <div className="relative space-y-4 sm:space-y-6">
-            <div className="rounded-[24px] sm:rounded-[28px] border border-white/10 bg-white/10 p-4 sm:p-5">
-              <div className="flex flex-col min-[420px]:flex-row min-[420px]:items-center justify-between gap-4">
-                <div>
-                  <p className="text-[10px] sm:text-xs uppercase tracking-[0.22em] text-slate-200/75">
-                    Featured talent
-                  </p>
-                  <h3 className="text-xl sm:text-2xl font-extrabold text-white mt-1">
-                    Pre-screened candidates
-                  </h3>
-                </div>
+          <div className="absolute left-[5%] top-[37%] grid grid-cols-7 gap-3 opacity-70">
+            {Array.from({ length: 35 }).map((_, index) => (
+              <span key={index} className="h-1.5 w-1.5 rounded-full bg-[#1349c5]" />
+            ))}
+          </div>
 
-                <div className="w-fit shrink-0 inline-flex items-center justify-center rounded-full bg-emerald-400/15 px-3 py-2 text-emerald-100 text-xs font-semibold">
-                  Verified
-                </div>
-              </div>
+          <svg className="absolute right-[4%] top-[23%] h-32 w-48 text-white/85" viewBox="0 0 210 130" fill="none" aria-hidden="true">
+            {[0, 1, 2, 3, 4, 5].map((line) => (
+              <path
+                key={line}
+                d={`M12 ${22 + line * 14} C 56 ${36 + line * 8}, 104 ${8 + line * 17}, 198 ${22 + line * 13}`}
+                stroke="currentColor"
+                strokeWidth="3.2"
+                strokeLinecap="round"
+              />
+            ))}
+          </svg>
 
-              <div className="mt-5 grid grid-cols-2 gap-3 text-slate-200">
-                <div className="rounded-2xl bg-white/10 p-4">
-                  <p className="text-2xl sm:text-3xl font-bold">24h</p>
-                  <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.16em] text-slate-200/70 mt-1">
-                    Fast Matching
-                  </p>
-                </div>
-
-                <div className="rounded-2xl bg-white/10 p-4">
-                  <p className="text-2xl sm:text-3xl font-bold">92%</p>
-                  <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.16em] text-slate-200/70 mt-1">
-                    Success rate
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-[24px] sm:rounded-[28px] border border-white/10 bg-white/5 p-4 sm:p-5">
-              <div className="flex items-center gap-3 text-white">
-                <span className="inline-flex items-center justify-center rounded-2xl bg-white/15 p-3 shrink-0">
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M3 7h18M3 12h18M3 17h18"
-                    />
-                  </svg>
-                </span>
-
-                <div>
-                  <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-slate-200/70">
-                    Matching in
-                  </p>
-                  <p className="text-base sm:text-lg font-bold">
-                    BFSI, Retail & IT
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-5 grid grid-cols-1 min-[420px]:grid-cols-2 gap-3 text-slate-200">
-                <div className="rounded-2xl bg-white/10 p-4">
-                  <p className="text-xs sm:text-sm font-semibold">
-                    Remote friendly
-                  </p>
-                </div>
-
-                <div className="rounded-2xl bg-white/10 p-4">
-                  <p className="text-xs sm:text-sm font-semibold">
-                    Entry level
-                  </p>
-                </div>
-              </div>
-            </div>
+          <div className="absolute inset-x-16 bottom-0 top-0 overflow-hidden rounded-[46%_46%_42%_42%] sm:inset-x-20">
+            <img
+              src="/professional-transparent.png"
+              alt="Professional ready for career opportunities"
+              className="h-full w-full scale-100 object-cover object-top"
+              alt="Professional ready for career opportunities"
+            />
           </div>
         </motion.div>
       </div>
-    </motion.div>
-  </AnimatePresence>
+    </section>
 
-  {/* Left Button */}
-  <button
-    onClick={() => paginate(-1)}
-    className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-black/35 hover:bg-black/55 text-white flex items-center justify-center transition opacity-100 lg:opacity-0 lg:group-hover:opacity-100 focus:outline-none z-20"
-    aria-label="Previous slide"
-  >
-    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
-    </svg>
-  </button>
-
-  {/* Right Button */}
-  <button
-    onClick={() => paginate(1)}
-    className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-black/35 hover:bg-black/55 text-white flex items-center justify-center transition opacity-100 lg:opacity-0 lg:group-hover:opacity-100 focus:outline-none z-20"
-    aria-label="Next slide"
-  >
-    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
-    </svg>
-  </button>
-
-  {/* Dots */}
-  <div className="absolute bottom-7 sm:bottom-2 lg:bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-20">
-    {bannerSlides.map((_, i) => (
-      <button
-        key={i}
-        onClick={() => setSlide([i, i > slideIndex ? 1 : -1])}
-        className={`h-1.5 rounded-full transition-all duration-300 ${
-          slideIndex === i ? "w-8 bg-amber-400" : "w-2 bg-white/40"
-        }`}
-        aria-label={`Go to slide ${i + 1}`}
-      />
-    ))}
-  </div>
-</div>
-
-      {/* 2. Find The Right Job For You Section */}
-      <section className="bg-white/90 backdrop-blur-md py-12 px-6 shadow-xl relative -mt-8 mx-auto max-w-6xl w-full rounded-3xl border border-slate-200/80 z-20">
-        <div className="text-center mb-8">
-          <h3 className="text-2xl md:text-3xl font-extrabold text-blue-900 tracking-tight">Find The Right Job For You</h3>
-          <p className="text-sm text-slate-600 max-w-2xl mx-auto mt-3 leading-relaxed">
-            Search across cities, industries and experience levels with smart filters, instant preview and trusted employer matches.
-          </p>
-        </div>
-
-        {/* Search bar row */}
-        <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-5 gap-4 max-w-5xl mx-auto items-end">
-          <div className="md:col-span-2 relative">
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <input
-              type="text"
-              placeholder="Enter keywords, role or company"
-              value={searchKeywords}
-              onChange={(e) => setSearchKeywords(e.target.value)}
-              className="w-full border border-gray-200 focus:border-blue-500 rounded-2xl pl-11 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 bg-white transition-all duration-200"
-            />
+      {/* 3. Search by Category Section */}
+      <section className="relative overflow-hidden bg-white px-5 py-16 sm:px-8 lg:py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <span className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-xs font-extrabold uppercase tracking-[.18em] text-[#1349c5] shadow-sm">
+                <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                Smart category matching
+              </span>
+              <h2 className="mt-4 text-3xl font-black tracking-[-.045em] text-slate-900 sm:text-4xl">Search by Category</h2>
+              <p className="mt-3 max-w-xl text-sm leading-6 text-slate-500">Pick a field you understand. Our matching signals help connect your skills with roles a recruiter can actually discuss with you.</p>
+            </div>
+            <Link to="/jobs" className="inline-flex items-center gap-2 text-sm font-bold text-[#1349c5] transition hover:gap-3">All Categories <span aria-hidden="true">→</span></Link>
           </div>
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.121 17.804A13.937 13.937 0 0112 15c2.208 0 4.295.573 6.121 1.575M7 7h10M7 12h8" /></svg>
-            </span>
-            <select
-              value={selectedCity}
-              onChange={(e) => setSelectedCity(e.target.value)}
-              className="w-full border border-gray-200 focus:border-blue-500 rounded-2xl pl-10 pr-3 py-3 text-sm text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/20 bg-white transition-all duration-200 cursor-pointer"
-            >
-              <option>All City</option>
-              <option>Ahmedabad</option>
-              <option>Mumbai</option>
-              <option>Delhi</option>
-              <option>Bangalore</option>
-            </select>
-          </div>
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
-            </span>
-            <select
-              value={selectedIndustry}
-              onChange={(e) => setSelectedIndustry(e.target.value)}
-              className="w-full border border-gray-200 focus:border-blue-500 rounded-2xl pl-10 pr-3 py-3 text-sm text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/20 bg-white transition-all duration-200 cursor-pointer"
-            >
-              <option>Industry</option>
-              <option>BFSI</option>
-              <option>IT-ITES</option>
-              <option>Manufacturing</option>
-              <option>Healthcare</option>
-            </select>
-          </div>
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14M5 16h10M5 8h4" /></svg>
-            </span>
-            <select
-              value={selectedExp}
-              onChange={(e) => setSelectedExp(e.target.value)}
-              className="w-full border border-gray-200 focus:border-blue-500 rounded-2xl pl-10 pr-3 py-3 text-sm text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/20 bg-white transition-all duration-200 cursor-pointer"
-            >
-              <option>Experience</option>
-              <option>Fresher</option>
-              <option>1-2 years</option>
-              <option>3-5 years</option>
-              <option>5+ years</option>
-            </select>
-          </div>
-          <button
-            type="submit"
-            className="bg-[#1349c5] text-white font-bold rounded-2xl py-3 px-6 uppercase text-xs tracking-widest hover:bg-blue-800 transition-all duration-300 shadow-md hover:shadow-lg w-full flex items-center justify-center gap-2 hover:scale-[1.02]"
-          >
-            Search Now
-          </button>
-        </form>
-
-        <div className="max-w-5xl mx-auto mt-5 flex flex-wrap items-center justify-center gap-3">
-          {['Fresher', 'Immediate Join', 'Verified', 'Remote Ready', 'BFSI', 'IT & ITES'].map((filter) => (
-            <button key={filter} className="rounded-full border border-slate-200 bg-slate-100 px-4 py-2 text-xs text-slate-700 font-semibold transition-all duration-200 hover:bg-[#1349c5] hover:text-white">
-              {filter}
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {/* 3. Job Spotlight Section */}
-      <section className="bg-[#f8fafc] py-20 px-4">
-        <div className="max-w-6xl mx-auto text-center mb-6">
-          <span className="text-blue-600 font-bold text-xs uppercase tracking-[0.2em]">Job Spotlight</span>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mt-2">Latest Openings</h2>
-          <p className="text-sm text-slate-500 max-w-2xl mx-auto mt-3 leading-relaxed">
-            Curated entry-level roles updated daily across top sectors, with transparent hiring details and quick access to top employers.
-          </p>
-          <div className="w-12 h-1 bg-blue-600 mx-auto mt-4 rounded-full"></div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-          {jobs.map((job, idx) => {
-            const isSaved = savedJobs.includes(idx);
-            return (
+          <Link to="/jobs">
+          <div className="relative mt-9 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {jobCategories.map((category, index) => (
               <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 30 }}
+                key={category.name}
+                initial={{ opacity: 0, y: 18 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: idx * 0.08, type: "spring", stiffness: 100 }}
-                whileHover={{ y: -6, boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' }}
-                className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm transition-all duration-300"
+                viewport={{ once: true, amount: .2 }}
+                transition={{ duration: .45, delay: index * .06 }}
+                whileHover={{ y: -5 }}
+                className="group relative flex min-h-[245px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_35px_-32px_rgba(15,23,42,.45)] transition duration-300 hover:border-[#1349c5]/35 hover:shadow-[0_24px_55px_-34px_rgba(19,73,197,.55)]"
               >
-                <div className="flex flex-col gap-4">
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-3">
-                      <div className={`h-12 w-12 rounded-2xl flex items-center justify-center font-bold ${job.logoBg}`}>
-                        {job.logo}
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-slate-900">{job.company}</p>
-                        <p className="text-xs text-slate-400">{job.posted}</p>
-                      </div>
-                    </div>
-                    <span className="rounded-full bg-slate-100 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.25em] text-slate-600">
-                      {job.type}
-                    </span>
+                <motion.div
+                  aria-hidden="true"
+                  animate={{ x: ["-120%", "120%"] }}
+                  transition={{ duration: 2.8, repeat: Infinity, ease: "linear", delay: index * .12 }}
+                  className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#1349c5]/45 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                />
+                {/* <span className="absolute right-4 top-2 text-[42px] font-black leading-none text-[#1349c5]/[.055] transition group-hover:text-[#1349c5]/10">{String(index + 1).padStart(2, '0')}</span> */}
+                <div className="relative flex items-start justify-between">
+                  <div className={`grid h-12 w-12 shrink-0 place-items-center rounded-2xl text-white shadow-sm ${category.accent}`}>
+                    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9"><path strokeLinecap="round" strokeLinejoin="round" d={category.path} /></svg>
                   </div>
-
-                  <div className="space-y-2">
-                    <h4 className="text-xl font-bold text-slate-900 leading-snug">{job.title}</h4>
-                    <div className="flex flex-wrap gap-3 text-xs font-medium text-slate-500">
-                      <span className="flex items-center gap-1">
-                        <svg className="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        </svg>
-                        {job.location}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <svg className="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                        {job.sector}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <svg className="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3a9 9 0 109 9" />
-                        </svg>
-                        {job.experience}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <svg className="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 21h14a2 2 0 002-2V8H3v11a2 2 0 002 2z" />
-                        </svg>
-                        {job.mode}
-                      </span>
-                      <span className="flex items-center gap-1 font-semibold text-emerald-600">
-                        {job.salary}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2">
-                    {job.tags.map((tag, i) => (
-                      <span
-                        key={i}
-                        className={`${tagStyles[tag] || 'bg-slate-100 text-slate-700'} text-[10px] font-semibold px-3 py-1 rounded-full uppercase tracking-[0.2em]`}
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="mt-4 flex flex-wrap items-center gap-3">
-                    <button
-                      onClick={() => setAlertMsg(`Viewing details for ${job.title}`)}
-                      className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition-all duration-300 hover:border-blue-400 hover:text-blue-700"
-                    >
-                      View Details
-                    </button>
-                    <button
-                      onClick={() => toggleSaveJob(idx)}
-                      className={`rounded-2xl border px-4 py-2 text-sm font-semibold transition-all duration-300 ${isSaved ? 'border-emerald-500 text-emerald-700 bg-emerald-50 hover:bg-emerald-100' : 'border-slate-200 text-slate-700 bg-white hover:border-blue-400 hover:text-blue-700'}`}
-                    >
-                      {isSaved ? 'Saved' : 'Save Job'}
-                    </button>
-                    <button
-                      onClick={() => setAlertMsg(`Thank you for applying to the "${job.title}" role!`)}
-                      className="rounded-2xl bg-[#1349c5] px-5 py-2 text-sm font-bold text-white uppercase tracking-[0.15em] shadow-lg shadow-[#1349c5]/15 transition duration-300 hover:bg-blue-700 hover:-translate-y-0.5"
-                    >
-                      Apply Now
-                    </button>
-                  </div>
+                  <Link
+                    to={`/jobs?category=${encodeURIComponent(category.name)}`}
+                    aria-label={`Browse ${category.name} jobs`}
+                    className="text-[#1349c5] font-bold hover:underline"
+                  >
+                  <span className="grid h-8 w-8 place-items-center rounded-full border border-slate-200 bg-white text-slate-400 transition group-hover:border-[#1349c5] group-hover:bg-[#1349c5] group-hover:text-white">↗</span>
+                  </Link>
                 </div>
+                <div className="relative mt-7">
+                  <h3 className="text-lg font-extrabold leading-tight text-slate-950 transition group-hover:text-[#1349c5]">{category.name}</h3>
+                  <p className="mt-3  mb-3 min-h-[44px] text-sm leading-6 text-slate-500">{category.description}</p>
+                </div>
+                <div className="relative mt-auto flex flex-wrap gap-2 border-t border-slate-200 pt-5">
+                  <p className="shrink-0 rounded-full bg-blue-50 px-3 py-1.5 text-[11px] font-extrabold text-[#1349c5]">{category.count} open jobs</p>
+                </div>
+                <div className={`absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 ${category.accent} transition-transform duration-300 group-hover:scale-x-100`} />
               </motion.div>
-            );
-          })}
-        </div>
-
-        <div className="mt-10 flex justify-center">
-          <button
-            onClick={() => setAlertMsg('Showing all open positions soon!')}
-            className="inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-3 text-sm font-bold text-white uppercase tracking-[0.18em] shadow-lg shadow-blue-600/20 transition duration-300 hover:bg-blue-700 hover:scale-[1.02]"
-          >
-            View All Jobs
-          </button>
+            ))}
+          </div>
+          </Link>
         </div>
       </section>
 
       {/* 4. Why Choose Us Section */}
-      <section className="bg-slate-50 py-20 px-4">
-        <div className="max-w-6xl mx-auto text-center mb-12">
-          <span className="text-blue-600 font-bold text-xs uppercase tracking-[0.2em]">Why Choose Us</span>
-          <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm">
-              <span className="inline-flex h-2.5 w-2.5 rounded-full bg-blue-600"></span>
-              500+ Successful Placements
-            </span>
-            <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm">
-              <span className="inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
-              150+ Trusted Companies
-            </span>
+      <section className="relative overflow-hidden bg-[#f3f0e9] px-5 py-20 sm:px-8 lg:py-28">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-10 grid gap-6 lg:grid-cols-[1fr_.7fr] lg:items-end">
+            <div>
+              <span className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[.24em] text-[#1349c5]">
+                <span className="h-px w-8 bg-[#1349c5]" /> Why choose Xpress Talent
+              </span>
+              <h2 className="mt-5 max-w-3xl text-4xl font-black leading-[1.06] tracking-[-.05em] text-slate-950 sm:text-5xl">
+                AI-assisted hiring, <span className="text-[#1349c5]">guided by people.</span>
+              </h2>
+            </div>
           </div>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mt-6">A smarter hiring experience for employers and candidates</h2>
-          <p className="text-base text-slate-500 max-w-2xl mx-auto mt-5 leading-relaxed">
-            We combine human expertise with technology to deliver pre-verified candidates, faster shortlists, and a more transparent recruitment experience.
-          </p>
-        </div>
 
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
-          {[
-            { 
-              title: 'Verified Talent', 
-              desc: 'Every candidate goes through screening, assessment and',
-              highlight: 'verification.',
-              icon: 'M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z',
-              accent: 'from-blue-50 via-blue-50/50 to-white',
-              borderColor: 'border-blue-200',
-              iconBg: 'bg-gradient-to-br from-blue-500 to-blue-600'
-            },
-            { 
-              title: 'Faster Hiring', 
-              desc: 'Shortlisted candidates delivered within',
-              highlight: '24 hours for urgent roles.',
-              icon: 'M13 10V3L4 14h7v7l9-11h-7z',
-              accent: 'from-indigo-50 via-indigo-50/50 to-white',
-              borderColor: 'border-indigo-200',
-              iconBg: 'bg-gradient-to-br from-indigo-500 to-indigo-600'
-            },
-            { 
-              title: 'Transparent Process', 
-              desc: 'Real-time status updates and',
-              highlight: 'consistent recruiter support.',
-              icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
-              accent: 'from-amber-50 via-amber-50/50 to-white',
-              borderColor: 'border-amber-200',
-              iconBg: 'bg-gradient-to-br from-amber-500 to-amber-600'
-            },
-            { 
-              title: 'Trusted Network', 
-              desc: 'Supported by top companies across',
-              highlight: 'BFSI, IT, Retail and MSME.',
-              icon: 'M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9',
-              accent: 'from-emerald-50 via-emerald-50/50 to-white',
-              borderColor: 'border-emerald-200',
-              iconBg: 'bg-gradient-to-br from-emerald-500 to-emerald-600'
-            }
-          ].map((item, i) => (
-            <motion.div 
-              key={item.title}
-              initial={{ opacity:0, y:30, scale: 0.98 }}
-              whileInView={{ opacity:1, y:0, scale: 1 }}
-              viewport={{ once:true }}
-              transition={{ duration:0.5, delay:i*0.12 }}
-              whileHover={{ y:-12 }}
-              className={`group rounded-[28px] border-2 ${item.borderColor} p-8 bg-gradient-to-br ${item.accent} overflow-hidden transition-all duration-300 hover:shadow-2xl cursor-pointer relative`}
+          <div className="relative mt-14 grid gap-12 lg:grid-cols-[.85fr_1.15fr] lg:items-center">
+            <motion.div
+              initial={{ opacity: 0, scale: .96 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, amount: .35 }}
+              transition={{ duration: .7, ease: "easeOut" }}
+              className="relative mx-auto min-h-[430px] w-full max-w-[430px]"
             >
-              {/* Decorative gradient overlay on hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/0 to-white/0 group-hover:from-white/5 group-hover:to-white/10 transition-all duration-300" />
-              
-              <motion.div 
-                whileHover={{ scale: 1.15, rotate: 12 }} 
-                transition={{ duration: 0.3 }} 
-                className={`relative mb-6 inline-flex h-16 w-16 items-center justify-center rounded-[20px] ${item.iconBg} shadow-lg group-hover:shadow-2xl transition-all duration-300`}
+              <motion.div
+                onViewportEnter={() => {
+                  window.setTimeout(() => setShowAllAdvantages(true), 700);
+                }}
+                className="absolute left-8 right-8 top-6 h-72 rounded-[42px] bg-white shadow-[0_24px_70px_-48px_rgba(15,23,42,.85)]"
+              />
+              <motion.div
+                initial={{ opacity: 0, x: -18, rotate: -2 }}
+                whileInView={{ opacity: 1, x: 0, rotate: -2 }}
+                viewport={{ once: true }}
+                transition={{ delay: .15, duration: .55 }}
+                className="absolute left-0 top-16 w-[245px] rounded-3xl border border-blue-100 bg-white p-5 shadow-[0_18px_50px_-34px_rgba(15,23,42,.75)]"
               >
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d={item.icon} />
-                </svg>
+                <div className="flex items-center gap-3">
+                  <div className="grid h-12 w-12 place-items-center rounded-full bg-blue-100 text-sm font-black text-[#1349c5]">HR</div>
+                  <div>
+                    <p className="text-sm font-extrabold text-slate-950">Recruiter review</p>
+                    <p className="text-xs text-slate-500">Listens before shortlisting</p>
+                  </div>
+                </div>
+                <div className="mt-5 space-y-2">
+                  <span className="block h-2 w-11/12 rounded-full bg-slate-100" />
+                  <span className="block h-2 w-8/12 rounded-full bg-slate-100" />
+                  <span className="block h-2 w-10/12 rounded-full bg-blue-100" />
+                </div>
               </motion.div>
-              
-              <h3 className="text-lg font-bold text-slate-900 mb-3 group-hover:text-slate-950 transition-colors">{item.title}</h3>
-              <p className="text-sm text-slate-600 leading-relaxed mb-1">
-                {item.desc}
-                <span className="font-semibold text-slate-900"> {item.highlight}</span>
-              </p>
-              
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }} 
-                whileInView={{ opacity: 1, y: 0 }} 
-                viewport={{ once: true }} 
-                transition={{ duration: 0.5, delay: i * 0.12 + 0.3 }} 
-                className="mt-5 pt-4 border-t border-slate-200/50"
+              <motion.div
+                initial={{ opacity: 0, x: 18, rotate: 2 }}
+                whileInView={{ opacity: 1, x: 0, rotate: 2 }}
+                viewport={{ once: true }}
+                transition={{ delay: .28, duration: .55 }}
+                className="absolute right-0 top-40 w-[245px] rounded-3xl border border-amber-100 bg-white p-5 shadow-[0_18px_50px_-34px_rgba(15,23,42,.75)]"
               >
-                <a href="#" className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 group-hover:text-slate-900 transition-colors">
-                  Learn More
-                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
-                </a>
+                <div className="flex items-center gap-3">
+                  <div className="grid h-12 w-12 place-items-center rounded-full bg-amber-100 text-sm font-black text-amber-700">CV</div>
+                  <div>
+                    <p className="text-sm font-extrabold text-slate-950">Candidate fit</p>
+                    <p className="text-xs text-slate-500">Skills, goals, and comfort</p>
+                  </div>
+                </div>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {["Skills", "Intent", "Culture"].map((label) => (
+                    <span key={label} className="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600">{label}</span>
+                  ))}
+                </div>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: .45, duration: .55 }}
+                className="absolute bottom-7 left-8 right-8 rounded-3xl bg-[#1349c5] p-5 text-white shadow-[0_22px_55px_-30px_rgba(19,73,197,.85)]"
+              >
+                <p className="text-xs font-black uppercase tracking-[.18em] text-blue-100">Human decision</p>
+                <p className="mt-2 text-2xl font-black tracking-[-.04em]">Right person, right role.</p>
+                <p className="mt-2 text-sm leading-6 text-blue-100">AI supports the process. People make the match meaningful.</p>
               </motion.div>
             </motion.div>
-          ))}
+
+            <motion.div
+              layout
+              className="relative"
+              onViewportEnter={() => {
+                window.setTimeout(() => setShowAllAdvantages(true), 700);
+              }}
+              viewport={{ once: true, amount: 0.35 }}
+            >
+              <div className="absolute bottom-0 left-6 top-0 hidden w-px bg-gradient-to-b from-transparent via-[#1349c5]/30 to-transparent sm:block" />
+              <div className="grid gap-8">
+                {[
+                  { 
+                    title: 'AI-assisted Screening', 
+                    desc: 'We use structured signals to quickly understand skills, experience, availability, and role relevance.',
+                    icon: 'M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z',
+                    tone: 'bg-blue-50 text-blue-700', number: '01'
+                  },
+                  { 
+                    title: 'Human Shortlisting', 
+                    desc: 'A recruiter checks the context behind every profile, so the shortlist feels thoughtful instead of automated.',
+                    icon: 'M13 10V3L4 14h7v7l9-11h-7z',
+                    tone: 'bg-indigo-50 text-indigo-700', number: '02'
+                  },
+                  { 
+                    title: 'Clear Conversations', 
+                    desc: 'Candidates and employers get practical updates from one accountable person, not a confusing black box.',
+                    icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
+                    tone: 'bg-amber-50 text-amber-700', number: '03'
+                  },
+                  { 
+                    title: 'Fit Beyond Keywords', 
+                    desc: 'We look at goals, communication, workplace expectations, and sector understanding before making an introduction.',
+                    icon: 'M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9',
+                    tone: 'bg-emerald-50 text-emerald-700', number: '04'
+                  }
+                ].map((item, i) => {
+                  if (i > 0 && !showAllAdvantages) return null;
+
+                  return (
+                    <motion.article
+                      key={item.title}
+                      layout
+                      initial={{ opacity: 0, x: 24 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: .2 }}
+                      transition={{ duration: .55, delay: showAllAdvantages ? i * .12 : 0, ease: "easeOut" }}
+                      whileHover={{ x: 8 }}
+                      className="group relative grid gap-4 pl-0 sm:grid-cols-[3rem_1fr] sm:pl-0"
+                    >
+                      <div className="relative z-10 grid h-12 w-12 place-items-center rounded-full bg-white text-[#1349c5] shadow-[0_10px_30px_-20px_rgba(15,23,42,.6)] ring-1 ring-[#1349c5]/15 transition duration-300 group-hover:bg-[#1349c5] group-hover:text-white">
+                        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={item.icon} />
+                        </svg>
+                      </div>
+                      <div className="relative border-b border-slate-200 pb-7">
+                        <div className="flex items-center gap-3">
+                          <span className="text-xs font-black tracking-[.22em] text-[#1349c5]">{item.number}</span>
+                          <motion.span
+                            className="h-px flex-1 bg-[#1349c5]/25"
+                            initial={{ scaleX: 0 }}
+                            whileInView={{ scaleX: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: .7, delay: i * .1 }}
+                            style={{ transformOrigin: "left" }}
+                          />
+                        </div>
+                        <h3 className="mt-3 text-xl font-extrabold text-slate-950 transition group-hover:text-[#1349c5]">{item.title}</h3>
+                        <p className="mt-3 max-w-xl text-sm leading-7 text-slate-600">{item.desc}</p>
+                      </div>
+                    </motion.article>
+                  );
+                })}
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
       {/* 5. Dual Call-to-Action Portals Section */}
-      <section className="bg-white py-20 px-4">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* For Candidates */}
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-700 to-indigo-800 text-white p-10 shadow-2xl shadow-blue-800/20 flex flex-col justify-between min-h-[320px] group">
-            <div className="absolute -left-10 top-12 h-48 w-48 rounded-full bg-white/10 blur-3xl" />
-            <div className="absolute right-6 top-10 h-32 w-32 rounded-full bg-amber-300/10 blur-3xl" />
-            <div className="relative z-10 space-y-4">
-              <span className="text-xs uppercase tracking-[0.3em] text-amber-300 font-bold">For Candidates</span>
-              <h3 className="text-3xl font-extrabold tracking-tight">Are you seeking your dream career path?</h3>
-              <p className="text-base text-blue-100 leading-8 font-medium">
-                Submit your profile and resume details to gain instant access to verified corporate openings with high match potential.
-              </p>
+      <section className="relative overflow-hidden bg-white px-5 py-20 sm:px-8 lg:py-28">
+        <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-slate-100" />
+        <div className="relative mx-auto max-w-7xl">
+          <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-2xl">
+              <span className="text-xs font-extrabold uppercase tracking-[.22em] text-[#1349c5]">Where do you want to start?</span>
+              <h2 className="mt-3 text-3xl font-black tracking-[-.04em] text-slate-950 sm:text-4xl">Two ways in. One helpful team.</h2>
             </div>
-            <Link
-              to="/candidates"
-              className="relative z-10 mt-6 inline-flex items-center gap-3 bg-white text-[#1349c5] font-bold px-7 py-3 rounded-2xl text-sm uppercase tracking-[0.15em] transition-all duration-300 shadow-xl shadow-white/20 hover:-translate-y-1 hover:bg-slate-100 hover:text-[#0f3e8f]"
-            >
-              Register Candidate Profile
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
+            {/* <p className="max-w-md text-sm leading-6 text-slate-500">No complicated forms or endless back-and-forth. Tell us what you need, and a real recruiter will take it from there.</p> */}
           </div>
 
-          {/* For Employers */}
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 to-indigo-950 text-white p-10 shadow-2xl shadow-slate-900/20 flex flex-col justify-between min-h-[320px] group">
-            <div className="absolute left-6 bottom-10 h-40 w-40 rounded-full bg-slate-200/10 blur-3xl" />
-            <div className="absolute right-10 top-16 h-28 w-28 rounded-full bg-blue-300/10 blur-3xl" />
-            <div className="relative z-10 space-y-4">
-              <span className="text-xs uppercase tracking-[0.3em] text-amber-300 font-bold">For Corporations</span>
-              <h3 className="text-3xl font-extrabold tracking-tight">Need pre-vetted entry level talent supply?</h3>
-              <p className="text-base text-slate-300 leading-8 font-medium">
-                Lower sourcing cycle times and human resource costs with custom pre-screened talent filters designed for rapid hiring.
-              </p>
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+          {/* For Candidates */}
+          <motion.article
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: .25 }}
+            transition={{ duration: .55 }}
+            className="group relative flex min-h-[430px] flex-col justify-between overflow-hidden rounded-[32px] border border-blue-100 bg-[#eef5ff] p-7 sm:p-10"
+          >
+            <div className="absolute -right-12 -top-12 h-52 w-52 rounded-full border-[28px] border-white/60 transition-transform duration-700 group-hover:scale-110" />
+            <div className="absolute right-8 top-8 grid h-14 w-14 rotate-3 place-items-center rounded-2xl bg-white text-2xl shadow-[0_12px_30px_-16px_rgba(19,73,197,.45)] transition-transform group-hover:-rotate-3">👋</div>
+            <div className="relative max-w-md">
+              <span className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-[11px] font-bold text-[#1349c5] shadow-sm">
+                <span className="h-2 w-2 rounded-full bg-emerald-500" /> For candidates
+              </span>
+              <h3 className="mt-8 text-3xl font-black leading-tight tracking-[-.035em] text-slate-950 sm:text-4xl">Your next role should feel right, not just look right.</h3>
+              <p className="mt-4 text-sm leading-7 text-slate-600">Share what you are good at and where you want to grow. We will help you find roles worth a conversation.</p>
             </div>
-            <Link
-              to="/employers"
-              className="relative z-10 mt-6 inline-flex items-center gap-3 bg-[#1349c5] text-white font-bold px-7 py-3 rounded-2xl text-sm uppercase tracking-[0.15em] transition-all duration-300 shadow-xl shadow-blue-900/30 hover:-translate-y-1 hover:bg-blue-700"
-            >
-              Post Sourcing Requirement
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
+            <div className="relative mt-10 flex flex-wrap items-center gap-4">
+              <Link to="/candidates" className="inline-flex items-center gap-3 rounded-full bg-[#1349c5] px-6 py-3.5 text-sm font-bold text-white shadow-[0_12px_28px_-12px_rgba(19,73,197,.65)] transition hover:-translate-y-0.5 hover:bg-[#0f3e8f]">
+                Create my profile <span aria-hidden="true">→</span>
+              </Link>
+              <span className="text-xs font-medium text-slate-500">Takes about 3 minutes</span>
+            </div>
+          </motion.article>
+
+          {/* For Employers */}
+          <motion.article
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: .25 }}
+            transition={{ duration: .55, delay: .1 }}
+            className="group relative flex min-h-[430px] flex-col justify-between overflow-hidden rounded-[32px] bg-[#111827] p-7 text-white sm:p-10"
+          >
+            <div className="absolute -bottom-24 -right-20 h-64 w-64 rounded-full bg-[#1349c5]/30 blur-2xl transition-transform duration-700 group-hover:scale-125" />
+            <div className="absolute right-8 top-8 grid h-14 w-14 -rotate-3 place-items-center rounded-2xl border border-white/10 bg-white/10 text-2xl backdrop-blur transition-transform group-hover:rotate-3">🤝</div>
+            <div className="relative max-w-md">
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[.07] px-3 py-1.5 text-[11px] font-bold text-blue-200">
+                <span className="h-2 w-2 rounded-full bg-amber-400" /> For employers
+              </span>
+              <h3 className="mt-8 text-3xl font-black leading-tight tracking-[-.035em] sm:text-4xl">Tell us who is missing from your team.</h3>
+              <p className="mt-4 text-sm leading-7 text-slate-300">We will listen first, screen carefully, and introduce people who fit the work—not just the keywords.</p>
+            </div>
+            <div className="relative mt-10 flex flex-wrap items-center gap-4">
+              <Link to="/employers" className="inline-flex items-center gap-3 rounded-full bg-white px-6 py-3.5 text-sm font-bold text-slate-950 transition hover:-translate-y-0.5 hover:bg-blue-50">
+                Start a hiring brief <span aria-hidden="true">→</span>
+              </Link>
+              <span className="text-xs font-medium text-slate-400">We usually reply within a day</span>
+            </div>
+          </motion.article>
           </div>
         </div>
       </section>
 
       {/* 5. Stats Counters Section */}
-      <section className="bg-slate-50 py-20 px-4">
-        <div className="max-w-6xl mx-auto text-center mb-10">
-          <span className="text-blue-600 font-bold text-xs uppercase tracking-[0.2em]">Our Achievements</span>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mt-3">Building trust through results</h2>
-          <p className="text-sm text-slate-500 max-w-2xl mx-auto mt-4 leading-relaxed">
-            Key performance metrics that reflect our success helping employers and candidates connect faster and with confidence.
-          </p>
-        </div>
-        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {stats.map((stat, i) => (
-            <div
-              key={i}
-              className="bg-gradient-to-br from-slate-50 via-white to-blue-50 border border-slate-200 rounded-3xl p-10 text-center flex flex-col justify-center items-center shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
-            >
-              <div className="p-4 bg-white rounded-3xl mb-4 shadow-sm">
-                {stat.icon}
+      <section className="relative overflow-hidden bg-[#f3f0e9] px-5 py-20 sm:px-8 lg:py-28">
+        <div className="relative mx-auto max-w-7xl">
+          <div>
+            <div className="max-w-2xl">
+              <span className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-xs font-extrabold uppercase tracking-[.18em] text-[#1349c5] shadow-sm">
+                <span className="h-2 w-2 rounded-full bg-emerald-500" />Our track record</span>
+              <h2 className="mt-6 text-4xl font-black leading-[1.05] tracking-[-.05em] text-slate-950 sm:text-5xl">Good work leaves a trail.</h2>
+              <p className="mt-5 max-w-xl text-base leading-7 text-slate-600">These numbers are not vanity metrics. Each one represents a person who found a role, or a team that found the person it needed.</p>
+              <div className="mt-8 flex items-center gap-3 text-sm text-slate-500">
+                <span className="h-px w-10 bg-slate-400" /> Built one conversation at a time
               </div>
-              <span className="text-5xl md:text-6xl font-extrabold text-[#1349c5] mb-3">
-                {animatedStats[i]}{stat.suffix}
-              </span>
-              <span className="text-sm uppercase tracking-[0.28em] text-slate-500 font-semibold">{stat.label}</span>
             </div>
-          ))}
+
+            <div className="mt-14 grid w-full overflow-hidden rounded-2xl bg-[#10214c] shadow-[0_24px_55px_-38px_rgba(15,23,42,.75)] sm:grid-cols-2 lg:grid-cols-4">
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.55 }}
+              className="relative flex min-h-[270px] flex-col items-center justify-center overflow-hidden border-b border-white/15 bg-[#1349c5] px-8 py-10 text-center text-white sm:border-r lg:border-b-0"
+            >
+              <p className="text-sm font-bold uppercase tracking-[0.1em] text-blue-100">
+                People Placed
+              </p>
+
+              <h3 className="mt-4 text-6xl font-black leading-none tracking-[-0.02em] [font-family:arial]">
+                {animatedStats[0]}
+                <span className="text-amber-300">+</span>
+              </h3>
+
+              <p className="mt-6 max-w-[230px] text-sm leading-6 text-blue-100">
+                Careers moved forward through a real conversation.
+              </p>
+            </motion.div>
+
+            {/* Remaining Cards */}
+            {stats.slice(1).map((stat, index) => {
+              const i = index + 1;
+
+              const notes = [
+                "companies that trust our judgement",
+                "industries where we know the landscape",
+                "years spent learning what good hiring takes",
+              ];
+
+              return (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, x: 18 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, amount: 0.4 }}
+                  transition={{
+                    duration: 0.45,
+                    delay: index * 0.08,
+                  }}
+                  className="group relative flex min-h-[270px] flex-col items-center justify-center overflow-hidden border-b border-white/15 px-8 py-10 text-center transition-all duration-300 hover:bg-white/5 odd:sm:border-r lg:border-b-0 lg:border-r lg:last:border-r-0"
+                >
+                  <h3 className="text-5xl font-black tracking-[-0.05em] leading-none text-white">
+                    {animatedStats[i]}
+                    <span className="text-sky-400">{stat.suffix}</span>
+                  </h3>
+
+                  <h4 className="mt-6 text-2xl font-extrabold text-white">
+                    {stat.label}
+                  </h4>
+
+                  <p className="mt-3 max-w-[230px] text-sm leading-6 text-slate-300">
+                    {notes[index]}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
+          </div>
         </div>
       </section>
 
       {/* 6. Testimonials Carousel Section */}
-      <section className="bg-white py-20 px-6 overflow-hidden">
-        <div className="max-w-4xl mx-auto text-center">
-          <span className="text-blue-600 font-bold text-xs uppercase tracking-[0.2em]">Success Stories</span>
-          <h2 className="text-3xl font-extrabold text-gray-900 mt-2">What They Say</h2>
-          <div className="w-12 h-1 bg-blue-600 mx-auto mt-4 rounded-full mb-12"></div>
+      <section className="relative overflow-hidden bg-white px-5 py-20 sm:px-8 lg:py-28">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_16%,rgba(19,73,197,.08),transparent_28%),radial-gradient(circle_at_82%_74%,rgba(41,196,122,.08),transparent_24%)]" />
+      <div className="relative mx-auto max-w-5xl">
+        <div className="mb-10 text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-2 text-xs font-extrabold uppercase tracking-[.22em] text-[#1349c5]">
+            <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_16px_rgba(34,197,94,.75)]" />
+            In their own words
+          </span>
 
-          <div className="min-h-[320px] flex items-center justify-center">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTestimonial}
-                initial={{ opacity: 0, y: 20, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -20, scale: 0.98 }}
-                transition={{ duration: 0.45 }}
-                className="relative max-w-3xl rounded-[32px] border border-slate-200 bg-slate-50 p-10 shadow-xl"
-              >
-                {/* <div className="absolute inset-x-10 -top-6 h-16 rounded-b-[32px] bg-gradient-to-r from-blue-600 to-indigo-600 opacity-10" /> */}
-                <div className="relative space-y-8">
-                  <p className="text-lg md:text-xl text-slate-700 italic font-medium leading-relaxed max-w-2xl mx-auto">
-                    "{testimonials[activeTestimonial].quote}"
-                  </p>
+          <h2 className="mt-3 text-4xl font-black tracking-[-.045em] text-slate-950 sm:text-5xl">
+            The part we are proudest of.
+          </h2>
 
-                  <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="flex items-center gap-4">
-                      <div>
-                        <h5 className="text-xl font-semibold text-slate-900">{testimonials[activeTestimonial].name}</h5>
-                        <p className="text-sm text-slate-500">{testimonials[activeTestimonial].role} • {testimonials[activeTestimonial].industry}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col items-center sm:items-end gap-3">
-                      <div className="inline-flex items-center gap-1">
-                        {Array.from({ length: 5 }).map((_, starIndex) => (
-                          <svg
-                            key={starIndex}
-                            className={`w-4 h-4 ${starIndex < testimonials[activeTestimonial].rating ? 'text-amber-400' : 'text-slate-300'}`}
-                            fill={starIndex < testimonials[activeTestimonial].rating ? 'currentColor' : 'none'}
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 00.95.69h4.173c.969 0 1.371 1.24.588 1.81l-3.377 2.455a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.538 1.118l-3.377-2.455a1 1 0 00-1.176 0l-3.377 2.455c-.783.57-1.838-.196-1.538-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.098 9.393c-.783-.57-.38-1.81.588-1.81h4.173a1 1 0 00.95-.69l1.286-3.966z" />
-                          </svg>
-                        ))}
-                      </div>
-                      <div className="inline-flex items-center gap-3 rounded-full bg-white px-4 py-2 shadow-sm">
-                        <img
-                          src={testimonials[activeTestimonial].companyLogo}
-                          alt={`${testimonials[activeTestimonial].company} Logo`}
-                          className="h-6 w-auto object-contain"
-                        />
-                        <span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-600">
-                          {testimonials[activeTestimonial].company}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          <div className="mt-8 flex items-center justify-center gap-4">
-            <button
-              onClick={previousTestimonial}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm transition hover:border-blue-300 hover:text-blue-700"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <div className="flex items-center gap-2">
-              {testimonials.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setActiveTestimonial(i)}
-                  className={`h-2.5 rounded-full transition-all duration-300 ${activeTestimonial === i ? 'w-8 bg-[#1349c5]' : 'w-2 bg-slate-200'}`}
-                />
-              ))}
-            </div>
-            <button
-              onClick={nextTestimonial}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm transition hover:border-blue-300 hover:text-blue-700"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
+          <p className="mx-auto mt-4 max-w-md text-sm leading-6 text-slate-500">
+            Real experiences from people we have worked alongside.
+          </p>
         </div>
-      </section>
+
+        <div className="relative mx-auto flex max-w-3xl items-center justify-center">
+          <button
+            type="button"
+            onClick={previousTestimonial}
+            aria-label="Previous testimonial"
+            className="absolute bottom-1 right-[74px] z-20 hidden h-11 w-11 place-items-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-[0_28px_70px_-42px_rgba(15,23,42,.85)] transition hover:border-[#1349c5] hover:bg-[#1349c5] hover:text-white hover:shadow-[0_28px_70px_-42px_rgba(15,23,42,.85)] sm:grid"
+          >
+            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+
+          <div className="relative flex flex-1 justify-center overflow-hidden shadow-[0_28px_70px_-50px_rgba(15,23,42,.65)] lg:rounded-[18px]">
+          <AnimatePresence mode="wait" custom={testimonialDirection}>
+            <motion.div
+              key={activeTestimonial}
+              custom={testimonialDirection}
+              initial={{ opacity: 0, x: testimonialDirection > 0 ? 80 : -80, scale: 0.96 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: testimonialDirection > 0 ? -80 : 80, scale: 0.96 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.18}
+              onDragEnd={(_, info) => {
+                if (info.offset.x < -70) nextTestimonial();
+                if (info.offset.x > 70) previousTestimonial();
+              }}
+              className="relative w-full max-w-3xl overflow-hidden rounded-[18px] border border-blue-100 bg-[#E0F2FE] px-8 py-16 text-center shadow-[0_28px_70px_-50px_rgba(15,23,42,.65)] sm:px-16 sm:py-20"
+            >
+              <motion.span
+                className="absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-[#1349c5]/55 to-transparent"
+                animate={{ opacity: [0.25, 1, 0.25], x: [-24, 24, -24] }}
+                transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <div className="absolute inset-4 rounded-[14px] border border-white/65" />
+              <div className="relative z-10">
+                <p className="mx-auto min-h-[150px] max-w-2xl text-2xl font-medium leading-[1.45] text-[#64748B]">
+                  "{testimonials[activeTestimonial].quote}"
+                </p>
+
+                <div className="mt-10 text-center">
+                  <h5 className="text-2xl font-bold text-[#1349c5]">
+                    {testimonials[activeTestimonial].name}
+                  </h5>
+
+                  <p className="mt-2 text-xl font-bold text-[#4B5563]">
+                    {testimonials[activeTestimonial].role}
+                    {testimonials[activeTestimonial].industry
+                      ? `, ${testimonials[activeTestimonial].industry}`
+                      : ""}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+          </div>
+          <button
+            type="button"
+            onClick={nextTestimonial}
+            aria-label="Next testimonial"
+            className="absolute bottom-1 right-6 z-20 hidden h-11 w-11 place-items-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-[0_18px_40px_-22px_rgba(15,23,42,.65)] transition hover:border-[#1349c5] hover:bg-[#1349c5] hover:text-white hover:shadow-[0_22px_46px_-24px_rgba(19,73,197,.75)] sm:grid"
+          >
+            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m9 18 6-6-6-6" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="mt-8 flex items-center justify-center gap-3">
+          <button
+            type="button"
+            onClick={previousTestimonial}
+            aria-label="Previous testimonial"
+            className="grid h-10 w-10 place-items-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:border-[#1349c5] hover:bg-[#1349c5] hover:text-white sm:hidden"
+          >
+            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            onClick={nextTestimonial}
+            aria-label="Next testimonial"
+            className="grid h-10 w-10 place-items-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:border-[#1349c5] hover:bg-[#1349c5] hover:text-white sm:hidden"
+          >
+            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m9 18 6-6-6-6" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
 
       {/* 7. Trusted Companies Section */}
-      <section className="bg-blue-200 py-16 px-4">
+      <section className="overflow-hidden border-t border-slate-200 bg-[#f3f0e9] px-4 py-16">
         <div className="max-w-6xl mx-auto text-center mb-10">
           <span className="text-blue-700 font-bold text-xs uppercase tracking-[0.24em]">Trusted Companies</span>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mt-3">Trusted by 150+ Companies</h2>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mt-3">Trusted by 100+ Companies</h2>
           <p className="text-sm text-slate-700 max-w-2xl mx-auto mt-3">A proven partner for organisations that need fast, reliable entry-level hiring support.</p>
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {[
-              { value: '98%', label: 'Client satisfaction' },
-              { value: '500+', label: 'Successful hires' },
-              { value: '24h', label: 'Average turnaround' }
-            ].map((metric) => (
-              <div key={metric.label} className="rounded-3xl bg-white/90 border border-white/80 px-6 py-5 shadow-sm">
-                <p className="text-3xl font-extrabold text-slate-900">{metric.value}</p>
-                <p className="text-sm uppercase tracking-[0.24em] text-slate-500 mt-2">{metric.label}</p>
-              </div>
-            ))}
-          </div>
         </div>
 
-        <div className="overflow-hidden">
-          <motion.div
-            animate={{ x: ['0%', '-50%'] }}
-            transition={{ x: { repeat: Infinity, repeatType: 'loop', duration: 20, ease: 'linear' } }}
-            className="flex gap-6 items-center py-6"
-          >
-            {logoLoop.map((logo, idx) => (
+        <div className="animate-company-marquee flex w-max gap-4 group-hover:[animation-play-state:paused]">
+            {[...partnerLogos, ...partnerLogos].map((logo, idx) => (
               <motion.div
                 key={`${logo}-${idx}`}
-                whileHover={{ y: -6, scale: 1.02 }}
-                className="group min-w-[220px] h-28 rounded-3xl bg-white/95 border border-slate-200 shadow-sm flex items-center justify-center transition-all duration-300 overflow-hidden"
+                whileHover={{ y: -3 }}
+                className="group/logo flex h-24 w-[200px] shrink-0 items-center justify-center overflow-hidden rounded-lg border border-slate-200 bg-white p-4 transition-all duration-100"
               >
                 <img
                   src={logo}
                   alt={`Partner logo ${idx + 1}`}
-                  className="max-h-16 max-w-full object-contain filter grayscale transition duration-300 group-hover:grayscale-0"
+                  className="max-h-16 max-w-full object-contain filter grayscale transition duration-300 group-hover/logo:grayscale-0"
                   onError={(e) => {
                     e.target.style.display = 'none';
                     e.target.parentNode.innerText = `Partner ${idx + 1}`;
@@ -1127,7 +945,6 @@ function Home() {
                 />
               </motion.div>
             ))}
-          </motion.div>
         </div>
       </section>
 

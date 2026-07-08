@@ -1,7 +1,7 @@
 ﻿import React, { useState } from "react";
 import { motion } from "framer-motion";
 
-const inputCls = "w-full border-2 border-slate-200 focus:border-[#1349c5] rounded-xl px-4 py-3 text-sm focus:outline-none transition-all duration-200 bg-slate-50/50 placeholder-slate-400";
+const inputCls = "w-full border border-slate-300 focus:border-[#1349c5] rounded-lg px-4 py-3 text-sm focus:outline-none transition-colors duration-200 bg-white placeholder-slate-400";
 const labelCls = "block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5";
 
 const benefits = [
@@ -92,61 +92,46 @@ function Employers() {
   return (
     <div>
       {/* Hero */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-blue-950 via-indigo-950 to-slate-950 text-white py-24 px-6">
-        <div className="absolute inset-0 bg-[radial-gradient(#ffffff12_1px,transparent_1px)] [background-size:22px_22px]" />
-        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-blue-500/25 blur-3xl" />
-        <div className="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-amber-400/10 blur-3xl" />
+      <div className="relative overflow-hidden bg-[#f3f0e9] px-6 py-20 text-slate-950 lg:py-24">
 
         <div className="relative max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center lg:text-left"
+            className="text-left"
           >
-            <span className="inline-block text-amber-400 text-xs font-bold uppercase tracking-[0.25em] mb-5">
-              For Corporations
+            <span className="mb-5 inline-block border-l-2 border-[#1349c5] pl-3 text-xs font-bold uppercase tracking-[0.22em] text-[#1349c5]">
+              For employers
             </span>
 
             <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
-              Employer <span className="text-amber-400">Registration</span>
+              Find the <span className="text-[#1349c5]">right talent</span><br />
+              for your business.
             </h1>
 
-            <p className="mt-6 text-gray-300 text-base md:text-lg max-w-xl leading-relaxed mx-auto lg:mx-0">
-              Register your organization to access our pre-vetted entry-level talent pool and streamline your hiring process.
+            <p className="mt-6 max-w-xl text-base leading-8 text-slate-600 md:text-lg">
+              Share the practical details of your company and hiring needs. Our team will review them and speak with you before recommending candidates.
             </p>
-
-            <div className="mt-10 grid grid-cols-3 gap-4 max-w-lg mx-auto lg:mx-0">
-              {[
-                ["150+", "Trusted Companies"],
-                ["500+", "Placements"],
-                ["25+", "Industries"],
-              ].map(([value, label]) => (
-                <div key={label} className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-                  <h3 className="text-2xl font-extrabold text-amber-400">{value}</h3>
-                  <p className="mt-1 text-xs text-gray-300">{label}</p>
-                </div>
-              ))}
-            </div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, x: 24 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
             className="hidden lg:flex justify-center"
           >
-            <div className="relative w-full max-w-md rounded-3xl border border-white/10 bg-white/10 p-8 backdrop-blur-xl shadow-2xl">
-              <div className="rounded-2xl bg-white p-6 text-slate-900">
-                <h3 className="text-xl font-bold">Hire Smarter</h3>
-                <p className="mt-2 text-sm text-slate-500">
-                  Find verified candidates faster with industry-ready hiring support.
+            <div className="relative w-full max-w-md border-t-4 border-amber-400 bg-[#10214c] p-8 text-white">
+              <div>
+                <h3 className="text-xl font-bold">What happens next</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-300">
+                  This form starts a conversation. It does not lock you into a service.
                 </p>
 
                 <div className="mt-6 space-y-4">
-                  {["Pre-vetted Candidates", "Fast Shortlisting", "Dedicated Hiring Support"].map((item) => (
+                  {["We review your requirement", "A hiring specialist calls you", "We agree on the next step"].map((item, index) => (
                     <div key={item} className="flex items-center gap-3">
-                      <span className="h-3 w-3 rounded-full bg-amber-400" />
+                      <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full border border-white/30 text-[10px] font-bold text-blue-200">{index + 1}</span>
                       <span className="text-sm font-semibold">{item}</span>
                     </div>
                   ))}
@@ -157,41 +142,20 @@ function Employers() {
         </div>
       </div>
 
-      <div className="bg-slate-50">
+      <div className="bg-[#fafafa]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-[360px_1fr] gap-8 items-start">
           {/* Left Sidebar */}
           <div className="space-y-6 lg:sticky lg:top-24">
-            <div className="bg-gradient-to-br from-[#1349c5] to-indigo-700 text-white rounded-3xl p-7 shadow-xl">
-              <span className="inline-block rounded-full bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-widest text-amber-300">
+            <div className="border-t-4 border-amber-400 bg-[#10214c] p-7 text-white">
+              <span className="inline-block text-xs font-bold uppercase tracking-widest text-blue-300">
                 Corporate Advantage
               </span>
 
               <h3 className="text-2xl font-extrabold mt-5 mb-6">
                 Hire better candidates faster
               </h3>
-
-              <div className="grid grid-cols-3 gap-3 mb-7">
-                <div className="rounded-2xl bg-white/10 p-3 text-center">
-                  <h4 className="text-xl font-extrabold text-amber-400">
-                    150+
-                  </h4>
-                  <p className="text-[10px] text-blue-100">Companies</p>
-                </div>
-                <div className="rounded-2xl bg-white/10 p-3 text-center">
-                  <h4 className="text-xl font-extrabold text-amber-400">
-                    500+
-                  </h4>
-                  <p className="text-[10px] text-blue-100">Placements</p>
-                </div>
-                <div className="rounded-2xl bg-white/10 p-3 text-center">
-                  <h4 className="text-xl font-extrabold text-amber-400">
-                    25+
-                  </h4>
-                  <p className="text-[10px] text-blue-100">Industries</p>
-                </div>
-              </div>
-
+              
               <div className="space-y-5">
                 {benefits.map((b, i) => (
                   <motion.div
@@ -228,7 +192,7 @@ function Employers() {
               </div>
             </div>
 
-            <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-4 text-sm">
+            <div className="space-y-4 border border-slate-200 bg-white p-6 text-sm">
               <h4 className="font-extrabold text-slate-800">Need Help?</h4>
               <p className="text-slate-500 text-xs leading-relaxed">
                 Our team is available to help you complete the registration
@@ -257,18 +221,18 @@ function Employers() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55 }}
-              className="bg-white border border-slate-100 rounded-3xl shadow-xl p-6 md:p-10"
+              className="border border-slate-200 bg-white p-6 md:p-10"
             >
               <div className="mb-8">
                 <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900">
-                  Employer Registration Form
+                  Company Registration Form
                 </h2>
                 <p className="text-sm text-slate-500 mt-2">
                   Complete your company profile to start hiring verified
                   entry-level talent.
                 </p>
 
-                <div className="mt-6 grid grid-cols-5 gap-2">
+                <div className="hidden">
                   {[1, 2, 3, 4, 5].map((step) => (
                     <div
                       key={step}
@@ -723,10 +687,10 @@ function Employers() {
                 {/* Submit */}
                 <motion.button
                   type="submit"
-                  whileHover={{ scale: 1.01 }}
+                  whileHover={{ y: -1 }}
                   whileTap={{ scale: 0.98 }}
                   disabled={loading}
-                  className="w-full bg-gradient-to-r from-[#1349c5] to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold py-4 rounded-xl text-sm uppercase tracking-widest transition-all duration-300 shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2 disabled:opacity-70"
+                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#1349c5] py-4 text-sm font-bold uppercase tracking-widest text-white transition-colors hover:bg-blue-800 disabled:opacity-70"
                 >
                   {loading ? (
                     <svg

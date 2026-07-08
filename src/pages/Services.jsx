@@ -52,31 +52,31 @@ const industries = ["Banking & Finance", "Microfinance", "Insurance", "IT & ITES
 function Services() {
   return (
     <div>
-      <div className="relative bg-gradient-to-br from-blue-950 via-indigo-900 to-slate-950 text-white py-24 px-6 overflow-hidden">
+      <div className="relative overflow-hidden bg-[#f3f0e9] px-6 py-20 text-slate-950 lg:py-24">
       {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[radial-gradient(#ffffff10_1px,transparent_1px)] [background-size:22px_22px]" />
+      <div className="hidden" />
 
       {/* Animated Background */}
       <motion.div
         animate={{ scale: [1, 1.25, 1], x: [0, 50, 0] }}
         transition={{ duration: 12, repeat: Infinity }}
-        className="absolute bottom-0 left-0 w-80 h-80 rounded-full bg-indigo-500/25 blur-3xl"
+        className="hidden"
       />
 
       <motion.div
         animate={{ scale: [1, 1.15, 1], y: [0, -40, 0] }}
         transition={{ duration: 10, repeat: Infinity }}
-        className="absolute top-10 right-10 w-72 h-72 rounded-full bg-amber-400/20 blur-3xl"
+        className="hidden"
       />
 
       {/* Content */}
-      <div className="relative max-w-5xl mx-auto flex flex-col items-center text-center">
+      <div className="relative mx-auto max-w-6xl border-l-4 border-[#1349c5] pl-6 text-left sm:pl-9">
 
         {/* Subtitle */}
         <motion.span
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-amber-400 text-xs font-bold uppercase tracking-[0.3em] mb-5"
+          className="mb-5 text-xs font-bold uppercase tracking-[0.24em] text-[#1349c5]"
         >
           WHAT WE OFFER
         </motion.span>
@@ -86,11 +86,11 @@ function Services() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-5xl md:text-7xl font-extrabold leading-tight"
+          className="max-w-4xl text-5xl font-extrabold leading-[1.02] tracking-[-.055em] md:text-7xl"
         >
-          Smart Hiring
+          Hiring support,
           <br />
-          <span className="text-amber-400">Solutions</span>
+          <span className="text-[#1349c5]">without the runaround.</span>
         </motion.h1>
 
         {/* Description */}
@@ -98,33 +98,28 @@ function Services() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.9 }}
           transition={{ delay: 0.2 }}
-          className="mt-8 max-w-3xl text-lg md:text-xl text-gray-300 leading-9"
+          className="mt-7 max-w-2xl text-base leading-8 text-slate-600 md:text-lg"
         >
-          End-to-end recruitment solutions designed to eliminate hiring
-          bottlenecks and connect your organization with pre-vetted,
-          job-ready talent.
+          We help teams source, screen, verify, and retain capable people. You can use the full process or ask us to step in where your team needs support.
         </motion.p>
       </div>
     </div>
 
-      <section className="relative max-w-6xl mx-auto px-6 py-24 overflow-hidden">
-        <div className="absolute top-10 left-10 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-10 right-10 w-72 h-72 bg-purple-400/10 rounded-full blur-3xl" />
+      <section className="relative mx-auto max-w-6xl overflow-hidden px-6 py-24">
 
-        <div className="relative text-center mb-20">
+        <div className="relative mb-16 max-w-2xl text-left">
           <span className="text-[#1349c5] text-xs font-bold uppercase tracking-widest">
             Core Offerings
           </span>
           <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mt-3">
-            Six Pillars of Excellence
+            Where we can help
           </h2>
-          <p className="mt-4 text-slate-500 max-w-2xl mx-auto">
-            Complete recruitment solutions designed to simplify hiring and deliver quality talent faster.
+          <p className="mt-4 max-w-2xl leading-7 text-slate-500">
+            Clear, practical support at each stage of hiring. Choose what your team needs and leave the rest with us.
           </p>
-          <div className="w-14 h-1 bg-gradient-to-r from-[#1349c5] to-purple-500 mx-auto mt-5 rounded-full" />
         </div>
 
-        <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="relative grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {services.map((svc, idx) => (
             <motion.div
               key={idx}
@@ -133,10 +128,10 @@ function Services() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: idx * 0.08 }}
               whileHover={{ y: -8 }}
-              className="group relative bg-white border border-slate-100 rounded-3xl p-8 shadow-sm hover:shadow-2xl transition-all duration-300 flex flex-col gap-5 overflow-hidden"
+              className="group relative flex min-h-[300px] flex-col gap-5 overflow-hidden rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 hover:border-slate-300 hover:bg-slate-50 hover:shadow-xl hover:shadow-slate-200/70"
             >
               <div
-                className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${
+                className={`absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r transition-transform duration-300 group-hover:scale-x-100 ${
                   idx === 0 ? "from-blue-500 to-cyan-400" :
                   idx === 1 ? "from-indigo-500 to-purple-500" :
                   idx === 2 ? "from-orange-400 to-amber-400" :
@@ -147,7 +142,7 @@ function Services() {
               />
 
               <div
-                className={`absolute -right-10 -top-10 w-32 h-32 rounded-full blur-2xl opacity-0 group-hover:opacity-30 transition ${
+                className={`hidden absolute -right-10 -top-10 w-32 h-32 rounded-full blur-2xl opacity-0 group-hover:opacity-30 transition ${
                   idx === 0 ? "bg-blue-500" :
                   idx === 1 ? "bg-purple-500" :
                   idx === 2 ? "bg-amber-400" :
@@ -159,7 +154,7 @@ function Services() {
 
               <div className="relative flex items-center justify-between">
                 <div
-                  className={`w-14 h-14 rounded-2xl flex items-center justify-center font-extrabold text-xl border transition-all duration-300 ${
+                  className={`flex h-12 w-12 items-center justify-center rounded-full border font-extrabold transition-all duration-300 ${
                     idx === 0 ? "bg-blue-50 text-blue-600 border-blue-100 group-hover:bg-blue-600 group-hover:text-white" :
                     idx === 1 ? "bg-indigo-50 text-indigo-600 border-indigo-100 group-hover:bg-indigo-600 group-hover:text-white" :
                     idx === 2 ? "bg-amber-50 text-amber-600 border-amber-100 group-hover:bg-amber-500 group-hover:text-white" :
@@ -172,7 +167,7 @@ function Services() {
                 </div>
 
                 <svg
-                  className={`w-6 h-6 transition group-hover:translate-x-1 ${
+                  className={`w-6 h-6 opacity-50 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100 ${
                     idx === 0 ? "text-blue-600" :
                     idx === 1 ? "text-indigo-600" :
                     idx === 2 ? "text-amber-500" :
@@ -195,40 +190,26 @@ function Services() {
               <p className="relative text-sm text-slate-500 leading-relaxed flex-grow">
                 {svc.desc}
               </p>
-
-              <Link
-                to="/contact"
-                className="relative mt-2 inline-flex w-fit items-center gap-2 rounded-full bg-slate-100 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-[#1349c5] group-hover:bg-[#1349c5] group-hover:text-white transition-all duration-300"
-              >
-                Learn More
-                <svg className="w-3.5 h-3.5 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
             </motion.div>
           ))}
         </div>
       </section>
 
-      <section className="relative bg-gradient-to-br from-[#1349c5] via-indigo-700 to-slate-900 py-20 px-6 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(#ffffff18_1px,transparent_1px)] [background-size:22px_22px]" />
-        <div className="absolute top-10 left-10 h-64 w-64 rounded-full bg-amber-400/20 blur-3xl" />
-        <div className="absolute bottom-0 right-10 h-72 w-72 rounded-full bg-cyan-400/20 blur-3xl" />
+      <section className="relative overflow-hidden bg-[#10214c] px-6 py-20">
 
         <div className="relative max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <span className="text-amber-400 text-xs font-bold uppercase tracking-widest">
+          <div className="mb-12 text-left md:grid md:grid-cols-2 md:items-end">
+            <div><span className="text-blue-300 text-xs font-bold uppercase tracking-widest">
               Coverage
             </span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-white mt-2">
               Industries We Serve
             </h2>
-            <p className="text-blue-100 mt-4 max-w-xl mx-auto">
-              We support fast-growing companies across multiple sectors with skilled, pre-vetted talent.
-            </p>
+            <p className="mt-5 max-w-xl text-md leading-7 text-slate-300 md:justify-self-end">We know the language, pace, and practical hiring needs of the sectors we serve.</p>
+            </div>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="grid border-t border-white/20 sm:grid-cols-2 lg:grid-cols-5">
             {industries.map((ind, i) => (
               <motion.span
                 key={i}
@@ -236,8 +217,8 @@ function Services() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: i * 0.05 }}
-                whileHover={{ y: -4, scale: 1.05 }}
-                className="group bg-white/10 hover:bg-white text-white hover:text-[#1349c5] border border-white/20 hover:border-white font-semibold text-sm px-5 py-3 rounded-full transition-all cursor-default backdrop-blur-md shadow-sm hover:shadow-xl"
+                whileHover={{ x: 3 }}
+                className="group cursor-default border-b border-white/20 px-5 py-5 text-sm font-semibold text-white transition hover:bg-white/[.06] sm:odd:border-r lg:border-r lg:last:border-r-0"
               >
                 <span className="mr-2 text-amber-400 group-hover:text-[#1349c5]">
                   ✦
@@ -249,9 +230,7 @@ function Services() {
         </div>
       </section>
 
-      <section className="relative py-24 px-6 bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden">
-        <div className="absolute top-10 right-10 h-64 w-64 rounded-full bg-blue-300/20 blur-3xl" />
-        <div className="absolute bottom-10 left-10 h-64 w-64 rounded-full bg-amber-300/25 blur-3xl" />
+      <section className="relative overflow-hidden bg-[#f3f0e9] px-6 py-24">
 
         <div className="relative max-w-5xl mx-auto text-center space-y-7">
           <span className="text-[#1349c5] text-xs font-bold uppercase tracking-widest">
@@ -270,14 +249,14 @@ function Services() {
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               to="/employers"
-              className="bg-gradient-to-r from-[#1349c5] to-indigo-600 hover:from-indigo-600 hover:to-[#1349c5] text-white font-bold px-9 py-3.5 rounded-full text-sm transition-all hover:scale-105 shadow-lg"
+              className="rounded-full bg-[#1349c5] px-8 py-3.5 text-sm font-bold text-white transition hover:bg-blue-800"
             >
               Hire Now
             </Link>
 
             <Link
               to="/contact"
-              className="bg-white border-2 border-slate-200 hover:border-[#1349c5] text-slate-700 hover:text-[#1349c5] font-bold px-9 py-3.5 rounded-full text-sm transition-all hover:scale-105 shadow-md"
+              className="rounded-full border border-slate-300 bg-white px-8 py-3.5 text-sm font-bold text-slate-700 transition hover:border-[#1349c5] hover:text-[#1349c5]"
             >
               Contact Us
             </Link>

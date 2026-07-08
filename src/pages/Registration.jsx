@@ -1,203 +1,257 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { saveRegisteredCandidate } from "../data/candidateStorage.js";
 
-// Common input styles matching your UI template
-const inputCls = "w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#1349c5] focus:bg-white transition-all text-sm";
+const inputCls =
+  "w-full rounded-2xl border border-slate-200/80 bg-white px-4 py-3 text-sm text-slate-800 shadow-sm transition placeholder:text-slate-400 focus:border-[#1349c5] focus:outline-none focus:ring-4 focus:ring-[#1349c5]/10";
 
-// Shared Reusable Field Wrapper Component
 const Field = ({ label, children, required }) => (
-  <div className="flex flex-col gap-1.5 w-full">
-    <label className="text-xs font-bold text-slate-600 uppercase tracking-wider flex items-center gap-0.5">
-      {label} {required && <span className="text-red-500">*</span>}
+  <div className="flex w-full flex-col gap-1.5">
+    <label className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+      {label} {required && <span className="text-rose-500">*</span>}
     </label>
     {children}
   </div>
 );
 
-// Constant Options for Dropdowns
-const constitutionOptions = ["Proprietorship", "Partnership", "LLP", "Private Limited", "Public Limited", "Trust/NGO"];
-const sectorOptions = ["Information Technology", "Manufacturing", "Healthcare", "Finance & Banking", "Education", "Retail & E-commerce", "Logistics", "Other"];
+const constitutionOptions = [
+  "Proprietorship",
+  "Partnership",
+  "LLP",
+  "Private Limited",
+  "Public Limited",
+  "Trust/NGO",
+];
+
+const sectorOptions = [
+  "Information Technology",
+  "Manufacturing",
+  "Healthcare",
+  "Finance & Banking",
+  "Education",
+  "Retail & E-commerce",
+  "Logistics",
+  "Other",
+];
+
+const candidateHighlights = [
+  "Share your background in a way that feels natural.",
+  "Keep your profile clean, current, and easy to read.",
+  "Move straight into candidate matching after signup.",
+];
 
 export default function Registration() {
-  // 'selection', 'candidate', or 'employer'
   const [activeView, setActiveView] = useState("selection");
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans selection:bg-blue-500 selection:text-white">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(19,73,197,0.12),transparent_32%),radial-gradient(circle_at_top_right,rgba(15,118,110,0.09),transparent_28%),linear-gradient(180deg,#f8fafc_0%,#eef2ff_100%)] text-slate-900 selection:bg-[#1349c5] selection:text-white">
       {activeView === "selection" ? (
         <SelectionView onSelect={setActiveView} />
       ) : (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-          {/* Back Navigation Bar */}
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
           <button
-            onClick={() => setActiveView("selection")}
-            className="mb-8 flex items-center gap-2 text-slate-500 hover:text-[#1349c5] font-bold text-sm transition-colors group"
+            onClick={() => {
+              setActiveView("selection");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="mb-5 inline-flex w-fit shrink-0 items-center gap-2 rounded-full border border-slate-200/70 bg-white/80 px-4 py-2 text-sm font-medium text-slate-600 shadow-sm backdrop-blur transition hover:border-[#1349c5]/30 hover:text-[#1349c5]"
           >
-            <svg className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.25" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            Back to Account Selection
+            Back to selection
           </button>
 
-          {/* Conditional Form Render */}
-          {activeView === "employer" && <EmployerForm />}
-          {activeView === "candidate" && <CandidateForm />}
+          <div>
+            {activeView === "employer" && <EmployerForm />}
+            {activeView === "candidate" && <CandidateForm />}
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-// ==========================================
-// 1. RE-DESIGNED DASHBOARD CARD SELECTION VIEW
-// ==========================================
+function SectionTitle({ step, title, description, accent = "blue" }) {
+  const accentClasses =
+    accent === "indigo"
+      ? "bg-indigo-50 text-indigo-700 ring-indigo-100"
+      : "bg-blue-50 text-[#1349c5] ring-blue-100";
+
+  return (
+    <div className="mb-6 flex items-start gap-4">
+      <div className={`mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl font-semibold ring-8 ${accentClasses}`}>
+        {step}
+      </div>
+      <div>
+        <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
+        <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-500">{description}</p>
+      </div>
+    </div>
+  );
+}
+
+function pillClass(theme) {
+  return theme === "indigo"
+    ? "bg-indigo-50 text-indigo-700 ring-indigo-100"
+    : "bg-blue-50 text-[#1349c5] ring-blue-100";
+}
+
 function SelectionView({ onSelect }) {
-  const trustIndicators = [
-    { value: "500+", label: "Successful Placements", icon: "🎯" },
-    { value: "150+", label: "Trusted Companies", icon: "🏢" },
-    { value: "25+", label: "Industries Served", icon: "🚀" }
+  const cards = [
+    {
+      key: "candidate",
+      theme: "blue",
+      badge: "For job seekers",
+      title: "Create a candidate profile",
+      copy: "Tell your story, list your strengths, and build a profile that feels like you.",
+      points: ["Simple profile setup", "Skills and role focus", "Smooth handoff to candidate view"],
+      cta: "Start as a candidate",
+      icon: (
+        <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+      ),
+      glow: "from-[#1349c5]/15 to-transparent",
+      iconBg: "bg-blue-50 text-[#1349c5]",
+      accent: "from-[#1349c5] to-blue-500",
+      button: "bg-slate-950 group-hover:bg-[#1349c5]",
+    },
+    {
+      key: "employer",
+      theme: "indigo",
+      badge: "For companies",
+      title: "Create a company profile",
+      copy: "Introduce your company clearly so candidates understand who they are applying to.",
+      points: ["Company details", "Hiring contact info", "Clean employer profile"],
+      cta: "Start as an employer",
+      icon: (
+        <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 21h18" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 7h1m-1 4h1m4-4h1m-1 4h1M9 15h6" />
+        </svg>
+      ),
+      glow: "from-indigo-600/15 to-transparent",
+      iconBg: "bg-indigo-50 text-indigo-700",
+      accent: "from-indigo-600 to-sky-500",
+      button: "bg-slate-950 group-hover:bg-indigo-600",
+    },
   ];
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center px-4 py-16 md:py-24 bg-gradient-to-br from-slate-50 via-slate-100 to-zinc-200 overflow-hidden">
-      
-      {/* Decorative Background Illustration Artifacts */}
-      <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-blue-400/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-indigo-500/10 rounded-full blur-[140px] pointer-events-none" />
-      
-      {/* Grid Mesh Overlay Layer */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
+    <div className="relative overflow-hidden px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <div className="absolute left-[-8%] top-[-8%] h-72 w-72 rounded-full bg-[#1349c5]/10 blur-3xl" />
+      <div className="absolute bottom-[-10%] right-[-6%] h-80 w-80 rounded-full bg-indigo-500/10 blur-3xl" />
 
-      <div className="relative max-w-5xl w-full z-10 space-y-16">
-        
-        {/* Upper Heading Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: -20 }}
+      <div className="relative mx-auto max-w-6xl">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="text-center space-y-6"
+          transition={{ duration: 0.55 }}
+          className="mx-auto mb-10 max-w-3xl text-center"
         >
-          <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200/60 text-[#1349c5] text-xs font-bold uppercase tracking-wider shadow-sm">
-            ⚡ Welcome to the onboarding portal
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/70 bg-white/80 px-4 py-1.5 text-sm font-semibold uppercase tracking-[0.18em] text-blue-600 shadow-sm backdrop-blur">
+            Registration
           </span>
-          <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight leading-none">
-            Get Started with <span className="text-[#1349c5] bg-gradient-to-r from-[#1349c5] to-blue-600 bg-clip-text text-transparent">XpressHiring</span>
+          <h1 className="mt-5 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
+            Pick the path that fits how you want to show up.
           </h1>
-          <p className="text-slate-500 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
-            Select your professional framework profile to access automated matchmaking infrastructure channels.
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+            The goal here is simple: make the signup feel calm, clear, and human. Choose the account type that matches you, then fill in the details at your own pace.
           </p>
         </motion.div>
 
-        {/* Dynamic Process Cards Row Block */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          
-          {/* Candidate Card Selection Layout */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            whileHover={{ y: -8, boxShadow: "0 30px 60px -15px rgba(19, 73, 197, 0.15)" }}
-            onClick={() => {
-              onSelect("candidate");
-              window.scrollTo({
-                top: 0,
-                behavior: "smooth", // or remove behavior for instant scroll
-              });
-            }}
-            className="relative bg-white border border-slate-200/80 hover:border-[#1349c5] rounded-3xl p-8 md:p-10 cursor-pointer transition-all duration-300 flex flex-col justify-between group overflow-hidden"
-          >
-            {/* Subtle card decorative indicator */}
-            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-blue-500/5 to-transparent rounded-bl-full pointer-events-none" />
+        <div className="grid gap-6 lg:grid-cols-2">
+          {cards.map((card, index) => (
+            <motion.button
+              key={card.key}
+              type="button"
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: index * 0.1 }}
+              whileHover={{ y: -6 }}
+              onClick={() => {
+                onSelect(card.key);
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className="group relative overflow-hidden rounded-[2rem] border border-white/80 bg-white/80 p-6 text-left shadow-[0_22px_70px_rgba(15,23,42,0.08)] backdrop-blur transition hover:border-[#1349c5]/20"
+            >
+              <div className={`absolute right-[-2rem] top-[-2rem] h-36 w-36 rounded-full bg-gradient-to-br ${card.glow}`} />
+              <div className="relative space-y-6">
+                <div className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] ring-1 ${pillClass(card.theme)}`}>
+                  {card.badge}
+                </div>
 
-            <div className="space-y-6">
-              <div className="w-16 h-16 bg-blue-50 text-[#1349c5] rounded-2xl flex items-center justify-center group-hover:bg-[#1349c5] group-hover:text-white transition-all duration-300 shadow-inner group-hover:scale-110">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-              </div>
-              <div>
-                <span className="text-xs font-bold text-blue-600 tracking-wider uppercase bg-blue-50 px-2.5 py-1 rounded-md">Individual</span>
-                <h2 className="text-2xl font-extrabold text-slate-900 mt-2 mb-3">Job Seeker / Candidate</h2>
-                <p className="text-slate-500 text-sm leading-relaxed">
-                  Build your verified credentials portfolio file, demonstrate target domain competencies, and receive placement matching instantly.
-                </p>
-              </div>
-            </div>
+                <div className={`flex h-16 w-16 items-center justify-center rounded-3xl ${card.iconBg} transition group-hover:text-white ${card.theme === "indigo" ? "group-hover:bg-indigo-600" : "group-hover:bg-[#1349c5]"}`}>
+                  {card.icon}
+                </div>
 
-            <div className="mt-8">
-              <div className="w-full bg-slate-50 border border-slate-200 group-hover:bg-[#1349c5] group-hover:text-white group-hover:border-[#1349c5] rounded-xl py-3.5 px-5 font-bold text-sm text-slate-700 flex items-center justify-center gap-2 transition-all duration-300 shadow-sm">
-                Apply as Candidate
-                <svg className="w-4 h-4 transform group-hover:translate-x-1.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </div>
-            </div>
-          </motion.div>
+                <div>
+                  <h2 className="text-2xl font-semibold tracking-tight text-slate-950">{card.title}</h2>
+                  <p className="mt-3 max-w-lg text-sm leading-6 text-slate-600">{card.copy}</p>
+                </div>
 
-          {/* Employer Card Selection Layout */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            whileHover={{ y: -8, boxShadow: "0 30px 60px -15px rgba(79, 70, 229, 0.15)" }}
-            onClick={() => {
-              onSelect("employer");
-              window.scrollTo({
-                top: 0,
-                behavior: "smooth", // or remove behavior for instant scroll
-              });
-            }}
-            className="relative bg-white border border-slate-200/80 hover:border-indigo-600 rounded-3xl p-8 md:p-10 cursor-pointer transition-all duration-300 flex flex-col justify-between group overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-indigo-500/5 to-transparent rounded-bl-full pointer-events-none" />
+                <ul className="space-y-3">
+                  {card.points.map((point) => (
+                    <li key={point} className="flex items-center gap-3 text-sm text-slate-600">
+                      <span className={`flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br ${card.accent} text-white shadow-sm`}>
+                        <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </span>
+                      {point}
+                    </li>
+                  ))}
+                </ul>
 
-            <div className="space-y-6">
-              <div className="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300 shadow-inner group-hover:scale-110">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                </svg>
+                <div className={`inline-flex items-center gap-2 rounded-full ${card.button} px-4 py-2 text-sm font-medium text-white transition`}>
+                  {card.cta}
+                  <svg className="h-4 w-4 transition group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.25" d="M13 5l7 7m0 0l-7 7m7-7H4" />
+                  </svg>
+                </div>
               </div>
-              <div>
-                <span className="text-xs font-bold text-indigo-600 tracking-wider uppercase bg-indigo-50 px-2.5 py-1 rounded-md">Enterprise</span>
-                <h2 className="text-2xl font-extrabold text-slate-900 mt-2 mb-3">Employer / Company</h2>
-                <p className="text-slate-500 text-sm leading-relaxed">
-                  Establish corporate hiring pipelines, access pre-vetted domain candidate nodes, and streamline complete screening tracking campaigns.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-8">
-              <div className="w-full bg-slate-50 border border-slate-200 group-hover:bg-indigo-600 group-hover:text-white group-hover:border-indigo-600 rounded-xl py-3.5 px-5 font-bold text-sm text-slate-700 flex items-center justify-center gap-2 transition-all duration-300 shadow-sm">
-                Onboard Company
-                <svg className="w-4 h-4 transform group-hover:translate-x-1.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </div>
-            </div>
-          </motion.div>
-
+            </motion.button>
+          ))}
         </div>
       </div>
     </div>
   );
 }
 
-// ==========================================
-// 2. FULL EMPLOYER REGISTRATION VIEW
-// ==========================================
 function EmployerForm() {
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState({});
   const [form, setForm] = useState({
-    employerName: "", description: "", constitution: "", pan: "", tan: "", gstn: "",
-    registeredAddress: "", registeredOfficeBoardNo: "", corporateAddress: "", corporateBoardNo: "",
-    spocName: "", spocDesignation: "", spocMobile: "", spocContactBoard: "", ext: "", spocEmail: "",
-    companyUrl: "", companyEmail: "", embedMapLink: "", sector: "", username: "", password: "", confirmPassword: ""
+    employerName: "",
+    description: "",
+    constitution: "",
+    pan: "",
+    tan: "",
+    gstn: "",
+    registeredAddress: "",
+    registeredOfficeBoardNo: "",
+    corporateAddress: "",
+    corporateBoardNo: "",
+    spocName: "",
+    spocDesignation: "",
+    spocMobile: "",
+    spocContactBoard: "",
+    ext: "",
+    spocEmail: "",
+    companyUrl: "",
+    companyEmail: "",
+    embedMapLink: "",
+    sector: "",
+    username: "",
+    password: "",
+    confirmPassword: "",
   });
 
   const handleInputChange = (field) => (e) => {
-    setForm({ ...form, [field]: e.target.value });
-    if (errors[field]) setErrors({ ...errors, [field]: "" });
+    setForm((current) => ({ ...current, [field]: e.target.value }));
   };
 
   const handleSubmit = (e) => {
@@ -206,340 +260,554 @@ function EmployerForm() {
     setTimeout(() => {
       setLoading(false);
       alert("Employer registration complete!");
-    }, 1500);
+    }, 1200);
   };
 
-  const dynamicBenefits = [
-    { title: "Direct Placement Engine", desc: "Gain direct algorithmic indexing filters targeting optimal candidate competencies." },
-    { title: "Corporate Branding Profile", desc: "Establish transparent culture metrics to secure premium retention rates." }
+  const benefits = [
+    {
+      title: "A profile that feels credible",
+      desc: "A steady, readable structure helps the company page feel approachable and trustworthy.",
+    },
+    {
+      title: "Easy contact handoff",
+      desc: "The form keeps the important hiring details close together, so it is easier to review later.",
+    },
   ];
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-      {/* Left Sidebar Content Details */}
-      <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-8">
-        <div className="bg-gradient-to-br from-[#1349c5] to-indigo-900 text-white rounded-3xl p-6 shadow-md space-y-6">
-          <h3 className="font-extrabold text-xl tracking-tight">Onboarding Perks</h3>
-          <div className="space-y-4">
-            {dynamicBenefits.map((b, idx) => (
-              <div key={idx} className="flex gap-3">
-                <div className="w-6 h-6 rounded-full bg-amber-400 flex items-center justify-center shrink-0 mt-0.5">
-                  <svg className="w-3.5 h-3.5 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div className="grid gap-8 lg:grid-cols-12 lg:gap-10">
+      <div className="space-y-6 lg:col-span-4">
+        <div className="rounded-[2rem] bg-slate-950 p-6 text-white shadow-[0_22px_70px_rgba(15,23,42,0.22)]">
+          <div className="inline-flex rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white/80">
+            Employer profile
+          </div>
+          <h3 className="mt-4 text-2xl font-semibold tracking-tight">Make the company page feel grounded and clear.</h3>
+          <p className="mt-3 text-sm leading-6 text-slate-300">
+            Keep the language real, the structure clean, and the details easy to scan. That usually reads better than trying to sound overly polished.
+          </p>
+
+          <div className="mt-6 space-y-4">
+            {benefits.map((benefit) => (
+              <div key={benefit.title} className="flex gap-3 rounded-2xl bg-white/5 p-4">
+                <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-400 text-slate-950">
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
                 <div>
-                  <h4 className="font-bold text-sm">{b.title}</h4>
-                  <p className="text-blue-100 text-xs mt-0.5 leading-relaxed">{b.desc}</p>
+                  <h4 className="text-sm font-semibold">{benefit.title}</h4>
+                  <p className="mt-1 text-xs leading-5 text-slate-300">{benefit.desc}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-4 text-sm">
-          <h4 className="font-extrabold text-slate-800">Need Help?</h4>
-          <p className="text-slate-500 text-xs leading-relaxed">Our team is available to help you complete the registration process.</p>
-          <a href="tel:+917600002069" className="flex items-center gap-3 text-[#1349c5] font-bold hover:underline">+91-7600002069</a>
-          <a href="mailto:xpresshiring@gmail.com" className="flex items-center gap-3 text-[#1349c5] font-bold hover:underline">xpresshiring@gmail.com</a>
+        <div className="rounded-[2rem] border border-white/70 bg-white/80 p-6 shadow-sm backdrop-blur">
+          <h4 className="text-lg font-semibold text-slate-900">Need help?</h4>
+          <p className="mt-2 text-sm leading-6 text-slate-500">If a field feels unclear, reach out and we’ll help you finish the setup cleanly.</p>
+          <div className="mt-4 space-y-2 text-sm">
+            <a href="tel:+917600002069" className="block font-medium text-[#1349c5] hover:underline">
+              +91-7600002069
+            </a>
+            <a href="mailto:xpresshiring@gmail.com" className="block font-medium text-[#1349c5] hover:underline">
+              xpresshiring@gmail.com
+            </a>
+          </div>
         </div>
       </div>
 
-      {/* Right Form Component Body */}
       <div className="lg:col-span-8">
-         <div className="h-[calc(100vh-120px)] overflow-y-auto pr-2">
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }} className="bg-white border border-slate-100 rounded-3xl shadow-xl p-6 md:p-10">
-            <div className="mb-8">
-              <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900">Employer Registration Form</h2>
-              <p className="text-sm text-slate-500 mt-2">Complete your company profile to start hiring verified entry-level talent.</p>
-              <div className="mt-6 grid grid-cols-5 gap-2">
-                {[1, 2, 3, 4, 5].map((step) => (
-                  <div key={step} className="h-2 rounded-full bg-gradient-to-r from-[#1349c5] to-indigo-700" />
-                ))}
-              </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="flex max-h-[calc(100vh)] flex-col overflow-hidden rounded-[2rem] border border-white bg-white shadow-[0_24px_80px_rgba(15,23,42,0.1)]"
+        >
+          <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col gap-10 overflow-y-auto bg-white px-6 pb-12 pt-6 pr-8 md:px-10 md:pb-14 md:pt-10 md:pr-12">
+          <div className="min-w-0">
+            <span className="inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-[#1349c5]">
+              Company Registration
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950">Tell us about your company</h2>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+              Use plain language and keep it honest. The best company profiles are the ones that feel easy to understand at a glance.
+            </p>
+            <div className="mt-6 grid grid-cols-5 gap-2">
+              {[1, 2, 3, 4, 5].map((step) => (
+                <div key={step} className="h-2 rounded-full bg-gradient-to-r from-[#1349c5] via-sky-500 to-indigo-500" />
+              ))}
             </div>
-
-            <form onSubmit={handleSubmit} className="space-y-10">
-              {/* Section 1: Company Info */}
-              <section>
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-8 h-8 rounded-full bg-[#1349c5] text-white text-xs font-bold flex items-center justify-center">1</div>
-                  <h3 className="font-extrabold text-slate-800">Company Information</h3>
-                </div>
-                <div className="space-y-4">
-                  <Field label="Employer Name" required>
-                    <input type="text" value={form.employerName} onChange={handleInputChange("employerName")} placeholder="Full registered company name" className={inputCls} required />
-                  </Field>
-                  <Field label="Employer Description">
-                    <textarea value={form.description} onChange={handleInputChange("description")} placeholder="Briefly describe your company, business and culture..." rows="3" className={`${inputCls} resize-none`} />
-                  </Field>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <Field label="Constitution of Employer">
-                      <select value={form.constitution} onChange={handleInputChange("constitution")} className={`${inputCls} cursor-pointer`}>
-                        <option value="">Select Constitution</option>
-                        {constitutionOptions.map((o) => <option key={o} value={o}>{o}</option>)}
-                      </select>
-                    </Field>
-                    <Field label="PAN" required>
-                      <input type="text" value={form.pan} onChange={handleInputChange("pan")} placeholder="ABCDE1234F" className={inputCls} required />
-                    </Field>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <Field label="TAN"><input type="text" value={form.tan} onChange={handleInputChange("tan")} placeholder="TAN Number" className={inputCls} /></Field>
-                    <Field label="GSTN"><input type="text" value={form.gstn} onChange={handleInputChange("gstn")} placeholder="GST Number" className={inputCls} /></Field>
-                  </div>
-                </div>
-              </section>
-
-              <hr className="border-slate-100" />
-
-              {/* Section 2: Address Details */}
-              <section>
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-8 h-8 rounded-full bg-[#1349c5] text-white text-xs font-bold flex items-center justify-center">2</div>
-                  <h3 className="font-extrabold text-slate-800">Address Details</h3>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <Field label="Registered Address"><input type="text" value={form.registeredAddress} onChange={handleInputChange("registeredAddress")} placeholder="Registered address" className={inputCls} /></Field>
-                  <Field label="Registered Office No / Board No"><input type="text" value={form.registeredOfficeBoardNo} onChange={handleInputChange("registeredOfficeBoardNo")} placeholder="Board / Office number" className={inputCls} /></Field>
-                  <Field label="Corporate Office Address" required><input type="text" value={form.corporateAddress} onChange={handleInputChange("corporateAddress")} placeholder="Corporate office full address" className={inputCls} required /></Field>
-                  <Field label="Corporate Office No / Board No"><input type="text" value={form.corporateBoardNo} onChange={handleInputChange("corporateBoardNo")} placeholder="Corporate office number" className={inputCls} /></Field>
-                </div>
-              </section>
-
-              <hr className="border-slate-100" />
-
-              {/* Section 3: SPOC Details */}
-              <section>
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-8 h-8 rounded-full bg-[#1349c5] text-white text-xs font-bold flex items-center justify-center">3</div>
-                  <h3 className="font-extrabold text-slate-800">SPOC Details</h3>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <Field label="SPOC Name" required><input type="text" value={form.spocName} onChange={handleInputChange("spocName")} placeholder="Full name" className={inputCls} required /></Field>
-                  <Field label="SPOC Designation" required><input type="text" value={form.spocDesignation} onChange={handleInputChange("spocDesignation")} placeholder="e.g. HR Manager" className={inputCls} required /></Field>
-                  <Field label="SPOC Mobile No" required><input type="tel" value={form.spocMobile} onChange={handleInputChange("spocMobile")} placeholder="+91 XXXXX XXXXX" className={inputCls} required /></Field>
-                  <Field label="SPOC Contact No / Board No"><input type="tel" value={form.spocContactBoard} onChange={handleInputChange("spocContactBoard")} placeholder="Landline / Board number" className={inputCls} /></Field>
-                  <Field label="Ext"><input type="text" value={form.ext} onChange={handleInputChange("ext")} placeholder="Extension number" className={inputCls} /></Field>
-                  <Field label="SPOC Email ID" required><input type="email" value={form.spocEmail} onChange={handleInputChange("spocEmail")} placeholder="spoc@company.com" className={inputCls} required /></Field>
-                </div>
-              </section>
-
-              <hr className="border-slate-100" />
-
-              {/* Section 4: Online Presence */}
-              <section>
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-8 h-8 rounded-full bg-[#1349c5] text-white text-xs font-bold flex items-center justify-center">4</div>
-                  <h3 className="font-extrabold text-slate-800">Online Presence</h3>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <Field label="Company URL / Website"><input type="url" value={form.companyUrl} onChange={handleInputChange("companyUrl")} placeholder="https://www.yourcompany.com" className={inputCls} /></Field>
-                  <Field label="Company Email"><input type="email" value={form.companyEmail} onChange={handleInputChange("companyEmail")} placeholder="info@yourcompany.com" className={inputCls} /></Field>
-                  <Field label="Embed Map Link" required><input type="url" value={form.embedMapLink} onChange={handleInputChange("embedMapLink")} placeholder="http://maps.google.com/..." className={inputCls} required /></Field>
-                  <Field label="Sector" required>
-                    <select value={form.sector} onChange={handleInputChange("sector")} className={`${inputCls} cursor-pointer`} required>
-                      <option value="">Select your sector</option>
-                      {sectorOptions.map((o) => <option key={o} value={o}>{o}</option>)}
+          </div>
+            <section>
+              <SectionTitle
+                step="1"
+                title="Company basics"
+                description="Start with the core company details that people will actually look for."
+              />
+              <div className="space-y-4">
+                <Field label="Employer name" required>
+                  <input
+                    type="text"
+                    value={form.employerName}
+                    onChange={handleInputChange("employerName")}
+                    placeholder="Full registered company name"
+                    className={inputCls}
+                    required
+                  />
+                </Field>
+                <Field label="Company overview">
+                  <textarea
+                    value={form.description}
+                    onChange={handleInputChange("description")}
+                    placeholder="A short note about what your company does and the kind of people you hire."
+                    rows="4"
+                    className={`${inputCls} resize-none`}
+                  />
+                </Field>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <Field label="Constitution">
+                    <select value={form.constitution} onChange={handleInputChange("constitution")} className={`${inputCls} cursor-pointer`}>
+                      <option value="">Select constitution</option>
+                      {constitutionOptions.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
                     </select>
                   </Field>
+                  <Field label="PAN" required>
+                    <input
+                      type="text"
+                      value={form.pan}
+                      onChange={handleInputChange("pan")}
+                      placeholder="ABCDE1234F"
+                      className={inputCls}
+                      required
+                    />
+                  </Field>
                 </div>
-              </section>
-
-              <hr className="border-slate-100" />
-
-              {/* Section 5: Account Credentials */}
-              <section>
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-8 h-8 rounded-full bg-[#1349c5] text-white text-xs font-bold flex items-center justify-center">5</div>
-                  <h3 className="font-extrabold text-slate-800">Account Credentials</h3>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <Field label="Username" required><input type="text" value={form.username} onChange={handleInputChange("username")} placeholder="Choose username" className={inputCls} required /></Field>
-                  <div />
-                  <Field label="Password" required><input type="password" value={form.password} onChange={handleInputChange("password")} placeholder="Min 8 characters" className={inputCls} required /></Field>
-                  <Field label="Confirm Password" required><input type="password" value={form.confirmPassword} onChange={handleInputChange("confirmPassword")} placeholder="Re-enter password" className={inputCls} required /></Field>
-                </div>
-              </section>
-
-              {/* Captcha Box */}
-              <div className="flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4">
-                <input type="checkbox" id="not-robot" required className="w-4 h-4 accent-[#1349c5] cursor-pointer" />
-                <label htmlFor="not-robot" className="text-sm font-semibold text-slate-600 cursor-pointer select-none">I am not a robot</label>
-                <div className="ml-auto flex flex-col items-center">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center">
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
-                  </div>
-                  <span className="text-[9px] text-slate-400 mt-0.5">reCAPTCHA</span>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <Field label="TAN">
+                    <input type="text" value={form.tan} onChange={handleInputChange("tan")} placeholder="TAN number" className={inputCls} />
+                  </Field>
+                  <Field label="GSTN">
+                    <input type="text" value={form.gstn} onChange={handleInputChange("gstn")} placeholder="GST number" className={inputCls} />
+                  </Field>
                 </div>
               </div>
+            </section>
 
-              {/* Submission Action Button */}
-              <motion.button
-                type="submit" whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }} disabled={loading}
-                className="w-full bg-gradient-to-r from-[#1349c5] to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold py-4 rounded-xl text-sm uppercase tracking-widest transition-all duration-300 shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2 disabled:opacity-70"
-              >
-                {loading ? (
-                  <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+            <div className="border-t border-slate-200/70" />
+
+            <section>
+              <SectionTitle
+                step="2"
+                title="Address details"
+                description="Use the address people should rely on, not the most formal wording possible."
+                accent="indigo"
+              />
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="Registered address">
+                  <input
+                    type="text"
+                    value={form.registeredAddress}
+                    onChange={handleInputChange("registeredAddress")}
+                    placeholder="Registered address"
+                    className={inputCls}
+                  />
+                </Field>
+                <Field label="Registered office / board no">
+                  <input
+                    type="text"
+                    value={form.registeredOfficeBoardNo}
+                    onChange={handleInputChange("registeredOfficeBoardNo")}
+                    placeholder="Office or board number"
+                    className={inputCls}
+                  />
+                </Field>
+                <Field label="Corporate office address" required>
+                  <input
+                    type="text"
+                    value={form.corporateAddress}
+                    onChange={handleInputChange("corporateAddress")}
+                    placeholder="Corporate office full address"
+                    className={inputCls}
+                    required
+                  />
+                </Field>
+                <Field label="Corporate office / board no">
+                  <input
+                    type="text"
+                    value={form.corporateBoardNo}
+                    onChange={handleInputChange("corporateBoardNo")}
+                    placeholder="Corporate office number"
+                    className={inputCls}
+                  />
+                </Field>
+              </div>
+            </section>
+
+            <div className="border-t border-slate-200/70" />
+
+            <section>
+              <SectionTitle
+                step="3"
+                title="Main contact"
+                description="This is the person we should be able to reach without confusion."
+              />
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="SPOC name" required>
+                  <input type="text" value={form.spocName} onChange={handleInputChange("spocName")} placeholder="Full name" className={inputCls} required />
+                </Field>
+                <Field label="SPOC designation" required>
+                  <input type="text" value={form.spocDesignation} onChange={handleInputChange("spocDesignation")} placeholder="e.g. HR Manager" className={inputCls} required />
+                </Field>
+                <Field label="SPOC mobile no" required>
+                  <input type="tel" value={form.spocMobile} onChange={handleInputChange("spocMobile")} placeholder="+91 XXXXX XXXXX" className={inputCls} required />
+                </Field>
+                <Field label="SPOC contact / board no">
+                  <input type="tel" value={form.spocContactBoard} onChange={handleInputChange("spocContactBoard")} placeholder="Landline or board number" className={inputCls} />
+                </Field>
+                <Field label="Ext">
+                  <input type="text" value={form.ext} onChange={handleInputChange("ext")} placeholder="Extension number" className={inputCls} />
+                </Field>
+                <Field label="SPOC email ID" required>
+                  <input type="email" value={form.spocEmail} onChange={handleInputChange("spocEmail")} placeholder="name@company.com" className={inputCls} required />
+                </Field>
+              </div>
+            </section>
+
+            <div className="border-t border-slate-200/70" />
+
+            <section>
+              <SectionTitle
+                step="4"
+                title="Online presence"
+                description="Add the links and sector details that help candidates understand your company faster."
+                accent="indigo"
+              />
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="Company website">
+                  <input type="url" value={form.companyUrl} onChange={handleInputChange("companyUrl")} placeholder="https://www.yourcompany.com" className={inputCls} />
+                </Field>
+                <Field label="Company email">
+                  <input type="email" value={form.companyEmail} onChange={handleInputChange("companyEmail")} placeholder="info@yourcompany.com" className={inputCls} />
+                </Field>
+                <Field label="Embed map link" required>
+                  <input type="url" value={form.embedMapLink} onChange={handleInputChange("embedMapLink")} placeholder="https://maps.google.com/..." className={inputCls} required />
+                </Field>
+                <Field label="Sector" required>
+                  <select value={form.sector} onChange={handleInputChange("sector")} className={`${inputCls} cursor-pointer`} required>
+                    <option value="">Select your sector</option>
+                    {sectorOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+              </div>
+            </section>
+
+            <div className="border-t border-slate-200/70" />
+
+            <section>
+              <SectionTitle
+                step="5"
+                title="Account access"
+                description="Choose credentials that are easy to remember and secure."
+              />
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="Username" required>
+                  <input type="text" value={form.username} onChange={handleInputChange("username")} placeholder="Choose username" className={inputCls} required />
+                </Field>
+                <div />
+                <Field label="Password" required>
+                  <input type="password" value={form.password} onChange={handleInputChange("password")} placeholder="At least 8 characters" className={inputCls} required />
+                </Field>
+                <Field label="Confirm password" required>
+                  <input type="password" value={form.confirmPassword} onChange={handleInputChange("confirmPassword")} placeholder="Re-enter password" className={inputCls} required />
+                </Field>
+              </div>
+            </section>
+
+            <label className="flex items-center gap-3 rounded-2xl border border-slate-200/70 bg-slate-50/80 px-5 py-4 text-sm text-slate-600">
+              <input type="checkbox" required className="h-4 w-4 accent-[#1349c5]" />
+              I confirm that the details above are accurate.
+            </label>
+
+            <motion.button
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.98 }}
+              type="submit"
+              disabled={loading}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#1349c5] to-indigo-600 px-5 py-4 text-sm font-semibold text-white shadow-[0_18px_40px_rgba(19,73,197,0.25)] transition hover:from-[#0f3f9e] hover:to-indigo-700 disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              {loading ? (
+                <>
+                  <svg className="h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                   </svg>
-                ) : (
-                  <>Submit Company Registration &rarr;</>
-                )}
-              </motion.button>
-            </form>
-          </motion.div>
-         </div> 
+                  Saving your company profile...
+                </>
+              ) : (
+                "Submit company registration"
+              )}
+            </motion.button>
+          </form>
+        </motion.div>
       </div>
     </div>
   );
 }
 
-// ==========================================
-// 3. COMPLETE MATCHING CANDIDATE VIEW
-// ==========================================
 function CandidateForm() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [formError, setFormError] = useState("");
   const [form, setForm] = useState({
-    fullName: "", email: "", mobile: "", highestQualification: "", keySkills: "",
-    username: "", password: "", confirmPassword: ""
+    fullName: "",
+    email: "",
+    mobile: "",
+    highestQualification: "",
+    keySkills: "",
+    role: "",
+    location: "",
+    industry: "",
+    experience: "",
+    username: "",
+    password: "",
+    confirmPassword: "",
   });
 
   const handleInputChange = (field) => (e) => {
-    setForm({ ...form, [field]: e.target.value });
+    setForm((current) => ({ ...current, [field]: e.target.value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setFormError("");
+
+    if (form.password !== form.confirmPassword) {
+      setFormError("Passwords do not match.");
+      return;
+    }
+
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      alert("Candidate registration complete!");
-    }, 1500);
+    const initials = form.fullName
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map((part) => part[0])
+      .join("")
+      .toUpperCase();
+
+    saveRegisteredCandidate({
+      id: Date.now(),
+      name: form.fullName.trim(),
+      email: form.email.trim(),
+      mobile: form.mobile.trim(),
+      role: form.role.trim(),
+      location: form.location.trim(),
+      industry: form.industry,
+      experience: form.experience.trim(),
+      qualification: form.highestQualification.trim(),
+      skills: form.keySkills
+        .split(",")
+        .map((skill) => skill.trim())
+        .filter(Boolean),
+      initials,
+      tone: "bg-indigo-600",
+    });
+
+    navigate("/candidates", { state: { registrationComplete: true } });
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-      {/* Dynamic Left Content Info Column */}
-      <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-8">
-        <div className="bg-gradient-to-br from-indigo-600 to-slate-900 text-white rounded-3xl p-6 shadow-md space-y-6">
-          <h3 className="font-extrabold text-xl tracking-tight">Your Career Start</h3>
-          <div className="space-y-4">
-            <div className="flex gap-3">
-              <div className="w-6 h-6 rounded-full bg-amber-400 flex items-center justify-center shrink-0 mt-0.5 text-slate-900 font-bold text-xs">✓</div>
-              <div>
-                <h4 className="font-bold text-sm">Instant Credential Verification</h4>
-                <p className="text-indigo-100 text-xs mt-0.5 leading-relaxed">Profiles are indexed quickly to establish high trust factors with tech recruiters.</p>
+    <div className="grid gap-8 lg:grid-cols-12 lg:gap-10">
+      <div className="space-y-6 lg:col-span-4">
+        <div className="rounded-[2rem] bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 p-6 text-white shadow-[0_22px_70px_rgba(15,23,42,0.22)]">
+          <div className="inline-flex rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white/80">
+            Candidate profile
+          </div>
+          <h3 className="mt-4 text-2xl font-semibold tracking-tight">Build a profile that sounds like a person, not a form.</h3>
+          <p className="mt-3 text-sm leading-6 text-slate-300">
+            Keep the details grounded. A good profile should read smoothly, make sense at a glance, and feel easy to trust.
+          </p>
+
+          <div className="mt-6 space-y-4">
+            {candidateHighlights.map((item) => (
+              <div key={item} className="flex gap-3 rounded-2xl bg-white/5 p-4">
+                <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-400 text-slate-950">
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <p className="text-sm leading-6 text-slate-300">{item}</p>
               </div>
-            </div>
-            <div className="flex gap-3">
-              <div className="w-6 h-6 rounded-full bg-amber-400 flex items-center justify-center shrink-0 mt-0.5 text-slate-900 font-bold text-xs">✓</div>
-              <div>
-                <h4 className="font-bold text-sm">Direct Core Interview Loops</h4>
-                <p className="text-indigo-100 text-xs mt-0.5 leading-relaxed">Bypass standard screening queues using targeted skills tracking pipelines.</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
-        <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm text-sm">
-          <h4 className="font-extrabold text-slate-800 mb-2">Registration Guideline</h4>
-          <p className="text-slate-500 text-xs leading-relaxed">Ensure contact endpoints match legal document metrics to ensure smooth backend profile verification cycles.</p>
+        <div className="rounded-[2rem] border border-white/70 bg-white/80 p-6 shadow-sm backdrop-blur">
+          <h4 className="text-lg font-semibold text-slate-900">A small note</h4>
+          <p className="mt-2 text-sm leading-6 text-slate-500">
+            If you are a fresher, that is fine. Keep the role and skills fields honest, and use the profile to make your strengths visible.
+          </p>
         </div>
       </div>
 
-      {/* Primary Form Input Body */}
-      <div className="max-w-5xl mx-auto lg:col-span-8 space-y-6">
-        <div className="h-[calc(100vh-120px)] overflow-y-auto hide-scrollbar pr-2">
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }} className="bg-white border border-slate-200 rounded-3xl shadow-xl p-6 md:p-10">
-            <div className="mb-8">
-              <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900">Candidate Profile Application</h2>
-              <p className="text-sm text-slate-500 mt-2">Build your onboarding dynamic index file to expose skills matching capabilities.</p>
-              <div className="mt-6 grid grid-cols-3 gap-2">
-                {[1, 2, 3].map((step) => (
-                  <div key={step} className="h-2 rounded-full bg-gradient-to-r from-indigo-600 to-blue-500" />
-                ))}
-              </div>
+      <div className="lg:col-span-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="flex max-h-[calc(100vh)] flex-col overflow-hidden rounded-[2rem] border border-white bg-white shadow-[0_24px_80px_rgba(15,23,42,0.1)]"
+        >
+          <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col gap-10 overflow-y-auto bg-white px-6 pb-12 pt-6 pr-8 md:px-10 md:pb-14 md:pt-10 md:pr-12">
+          <div className="min-w-0">
+            <span className="inline-flex rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-indigo-700">
+              Candidate Registration
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950">Create your candidate profile</h2>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+              Share the basics first, then fill in the parts that help a recruiter understand your background quickly.
+            </p>
+            <div className="mt-6 grid grid-cols-3 gap-2">
+              {[1, 2, 3].map((step) => (
+                <div key={step} className="h-2 rounded-full bg-gradient-to-r from-indigo-600 via-sky-500 to-blue-500" />
+              ))}
             </div>
-
-            <form onSubmit={handleSubmit} className="space-y-10">
-              {/* Step 1: Personal Info */}
-              <section className="space-y-4">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-8 h-8 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center">1</div>
-                  <h3 className="font-extrabold text-slate-800">Contact Foundations</h3>
-                </div>
-                <Field label="Full Name" required><input type="text" value={form.fullName} onChange={handleInputChange("fullName")} placeholder="John Doe" className={inputCls} required /></Field>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <Field label="Primary Email ID" required><input type="email" value={form.email} onChange={handleInputChange("email")} placeholder="john@example.com" className={inputCls} required /></Field>
-                  <Field label="Mobile Number" required><input type="tel" value={form.mobile} onChange={handleInputChange("mobile")} placeholder="+91 XXXXX XXXXX" className={inputCls} required /></Field>
-                </div>
-              </section>
-
-              <hr className="border-slate-100" />
-
-              {/* Step 2: Experience / Academic Details */}
-              <section className="space-y-4">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-8 h-8 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center">2</div>
-                  <h3 className="font-extrabold text-slate-800">Academic & Skill Base</h3>
-                </div>
-                <Field label="Highest Qualification" required><input type="text" value={form.highestQualification} onChange={handleInputChange("highestQualification")} placeholder="e.g. B.Tech Computer Engineering" className={inputCls} required /></Field>
-                <Field label="Key Skills (Comma Separated)" required><input type="text" value={form.keySkills} onChange={handleInputChange("keySkills")} placeholder="React, Node.js, Cybersecurity, IAM" className={inputCls} required /></Field>
-              </section>
-
-              <hr className="border-slate-100" />
-
-              {/* Step 3: Account Access Security */}
-              <section className="space-y-4">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-8 h-8 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center">3</div>
-                  <h3 className="font-extrabold text-slate-800">Account Configuration</h3>
-                </div>
-                <Field label="Username" required><input type="text" value={form.username} onChange={handleInputChange("username")} placeholder="Choose candidate handle" className={inputCls} required /></Field>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <Field label="Password" required><input type="password" value={form.password} onChange={handleInputChange("password")} placeholder="Create access pass" className={inputCls} required /></Field>
-                  <Field label="Confirm Password" required><input type="password" value={form.confirmPassword} onChange={handleInputChange("confirmPassword")} placeholder="Validate access pass" className={inputCls} required /></Field>
-                </div>
-              </section>
-
-              {/* Captcha */}
-              <div className="flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4">
-                <input
-                  type="checkbox"
-                  id="not-robot"
-                  required
-                  className="w-4 h-4 accent-[#1349c5]"
-                />
-                <label
-                  htmlFor="not-robot"
-                  className="text-sm font-semibold text-slate-600 cursor-pointer select-none"
-                >
-                  I am not a robot
-                </label>
-                <div className="ml-auto flex items-center gap-3 text-slate-400 text-xs">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
-                  </div>
-                  reCAPTCHA
-                </div>
+          </div>
+            <section>
+              <SectionTitle
+                step="1"
+                title="Contact basics"
+                description="Use the details you want a recruiter to reach you on."
+                accent="indigo"
+              />
+              <Field label="Full name" required>
+                <input type="text" value={form.fullName} onChange={handleInputChange("fullName")} placeholder="John Doe" className={inputCls} required />
+              </Field>
+              <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="Primary email" required>
+                  <input type="email" value={form.email} onChange={handleInputChange("email")} placeholder="john@example.com" className={inputCls} required />
+                </Field>
+                <Field label="Mobile number" required>
+                  <input type="tel" value={form.mobile} onChange={handleInputChange("mobile")} placeholder="+91 XXXXX XXXXX" className={inputCls} required />
+                </Field>
               </div>
-              <motion.button
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.98 }}
-                type="submit"
-                className="w-full bg-gradient-to-r from-[#1349c5] to-indigo-700 hover:from-blue-800 hover:to-indigo-800 text-white font-extrabold py-4 rounded-2xl uppercase text-sm tracking-wider transition shadow-lg shadow-blue-200"
-              >
-              Submit Registration
-              </motion.button>
-            </form>
-          </motion.div>
-        </div>
+            </section>
+
+            <div className="border-t border-slate-200/70" />
+
+            <section>
+              <SectionTitle
+                step="2"
+                title="Skills and direction"
+                description="Write this the way you would explain it to someone in an interview."
+              />
+              <Field label="Highest qualification" required>
+                <input
+                  type="text"
+                  value={form.highestQualification}
+                  onChange={handleInputChange("highestQualification")}
+                  placeholder="e.g. B.Tech Computer Engineering"
+                  className={inputCls}
+                  required
+                />
+              </Field>
+              <Field label="Key skills" required>
+                <input
+                  type="text"
+                  value={form.keySkills}
+                  onChange={handleInputChange("keySkills")}
+                  placeholder="React, Node.js, Cybersecurity, IAM"
+                  className={inputCls}
+                  required
+                />
+              </Field>
+              <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="Current or desired role" required>
+                  <input type="text" value={form.role} onChange={handleInputChange("role")} placeholder="e.g. React Developer" className={inputCls} required />
+                </Field>
+                <Field label="Location" required>
+                  <input type="text" value={form.location} onChange={handleInputChange("location")} placeholder="e.g. Ahmedabad" className={inputCls} required />
+                </Field>
+                <Field label="Industry" required>
+                  <select value={form.industry} onChange={handleInputChange("industry")} className={inputCls} required>
+                    <option value="">Select industry</option>
+                    <option>IT-ITES</option>
+                    <option>BFSI</option>
+                    <option>Retail</option>
+                    <option>Customer Service</option>
+                    <option>Human Resources</option>
+                    <option>Marketing</option>
+                    <option>Operations</option>
+                    <option>Other</option>
+                  </select>
+                </Field>
+                <Field label="Experience" required>
+                  <input type="text" value={form.experience} onChange={handleInputChange("experience")} placeholder="e.g. 2 years or Fresher" className={inputCls} required />
+                </Field>
+              </div>
+            </section>
+
+            <div className="border-t border-slate-200/70" />
+
+            <section>
+              <SectionTitle
+                step="3"
+                title="Account access"
+                description="Create login details you will remember without making them complicated."
+              />
+              <Field label="Username" required>
+                <input type="text" value={form.username} onChange={handleInputChange("username")} placeholder="Choose candidate handle" className={inputCls} required />
+              </Field>
+              <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="Password" required>
+                  <input type="password" value={form.password} onChange={handleInputChange("password")} placeholder="Create access pass" className={inputCls} required />
+                </Field>
+                <Field label="Confirm password" required>
+                  <input type="password" value={form.confirmPassword} onChange={handleInputChange("confirmPassword")} placeholder="Validate access pass" className={inputCls} required />
+                </Field>
+              </div>
+            </section>
+
+            {formError && (
+              <p role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
+                {formError}
+              </p>
+            )}
+
+            <label className="flex items-center gap-3 rounded-2xl border border-slate-200/70 bg-slate-50/80 px-5 py-4 text-sm text-slate-600">
+              <input type="checkbox" required className="h-4 w-4 accent-[#1349c5]" />
+              I confirm the details above are accurate.
+            </label>
+
+            <motion.button
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.98 }}
+              type="submit"
+              disabled={loading}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#1349c5] to-indigo-600 px-5 py-4 text-sm font-semibold text-white shadow-[0_18px_40px_rgba(19,73,197,0.25)] transition hover:from-[#0f3f9e] hover:to-indigo-700 disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              {loading ? (
+                <>
+                  <svg className="h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  </svg>
+                  Saving your profile...
+                </>
+              ) : (
+                "Submit registration"
+              )}
+            </motion.button>
+          </form>
+        </motion.div>
       </div>
     </div>
   );

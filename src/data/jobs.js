@@ -1,0 +1,11 @@
+export const jobs = [
+  { id: 1, title: "Financial Analyst", company: "Atria Finance", category: "Finance", location: "Mumbai", type: "Full Time", experience: "Entry-Level", posted: "2 days ago", salary: "INR 4.5L - 6.5L PA", color: "bg-blue-600", mark: "AF" },
+  { id: 2, title: "Customer Support Executive", company: "Mercury Services", category: "Customer Service", location: "Ahmedabad", type: "Full Time", experience: "No Experience", posted: "Today", salary: "INR 2.4L - 3.6L PA", color: "bg-amber-500", mark: "MS" },
+  { id: 3, title: "Junior React Developer", company: "HexaTech", category: "Software Engineering", location: "Bengaluru", type: "Internship", experience: "Entry-Level", posted: "3 days ago", salary: "INR 25K - 35K PM", color: "bg-indigo-600", mark: "HT" },
+  { id: 4, title: "Social Media Executive", company: "Northstar Retail", category: "Marketing", location: "Remote", type: "Remote", experience: "Entry-Level", posted: "1 day ago", salary: "INR 3L - 4.8L PA", color: "bg-rose-500", mark: "NR" },
+  { id: 5, title: "Human Resources Coordinator", company: "People First", category: "Human Resources", location: "Delhi", type: "Full Time", experience: "Mid-Level", posted: "4 days ago", salary: "INR 4L - 5.5L PA", color: "bg-emerald-600", mark: "PF" },
+  { id: 6, title: "Relationship Manager", company: "BluePeak Bank", category: "BFSI", location: "Pune", type: "Full Time", experience: "Mid-Level", posted: "5 days ago", salary: "INR 5L - 7.5L PA", color: "bg-sky-600", mark: "BB" },
+  { id: 7, title: "Operations Trainee", company: "Novus Works", category: "Operations", location: "Ahmedabad", type: "Training", experience: "No Experience", posted: "Today", salary: "INR 18K - 25K PM", color: "bg-violet-600", mark: "NW" },
+  { id: 8, title: "Technical Support Engineer", company: "DataRes", category: "Customer Service", location: "Hyderabad", type: "Part Time", experience: "Entry-Level", posted: "6 days ago", salary: "INR 20K - 30K PM", color: "bg-slate-800", mark: "DR" },
+  { id: 9, title: "Business Development Associate", company: "GrowthGrid", category: "Sales", location: "Mumbai", type: "Full Time", experience: "No Experience", posted: "2 days ago", salary: "INR 3L - 5L PA", color: "bg-orange-500", mark: "GG" },
+];
